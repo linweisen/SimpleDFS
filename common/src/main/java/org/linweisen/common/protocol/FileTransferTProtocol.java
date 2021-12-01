@@ -1,12 +1,18 @@
 package org.linweisen.common.protocol;
 
-public class FileSendProtocol extends AbstractProtocol{
+public class FileTransferTProtocol extends AbstractProtocol{
 
     private byte header = 0x01;
 
     private String fileName;
 
     private int segment;
+
+    private int index;
+
+    private String id;
+
+    private byte[] content;
 
     public String getFileName() {
         return fileName;
