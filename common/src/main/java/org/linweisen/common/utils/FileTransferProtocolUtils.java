@@ -40,10 +40,4 @@ public class FileTransferProtocolUtils {
         return fpList;
     }
 
-    public static void main(String[] args) throws IOException {
-        FileTransferProtocolUtils.build(new File("/Users/linweisen/Downloads/UnityHubSetup.dmg"),
-                10485760, "1");
-
-    }
-
 }

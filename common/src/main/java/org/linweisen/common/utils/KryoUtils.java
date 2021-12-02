@@ -4,6 +4,8 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import de.javakaffee.kryoserializers.UnmodifiableCollectionsSerializer;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 import org.apache.commons.codec.binary.Base64;
 import org.objenesis.strategy.StdInstantiatorStrategy;
 
@@ -13,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 
 
 public class KryoUtils {
+
     private static final String DEFAULT_ENCODING = "UTF-8";
 
     //每个线程的 Kryo 实例
@@ -99,6 +102,13 @@ public class KryoUtils {
     public static Object readFromByteArray(byte[] byteArray) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
         Input input = new Input(byteArrayInputStream);
+
+        Kryo kryo = getInstance();
+        return kryo.readClassAndObject(input);
+    }
+
+    public static Object readFromByteArray(ByteBuf byteBuf) {
+        Input input = new Input(new ByteBufInputStream(byteBuf));
 
         Kryo kryo = getInstance();
         return kryo.readClassAndObject(input);
