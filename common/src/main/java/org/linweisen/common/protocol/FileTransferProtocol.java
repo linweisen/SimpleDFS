@@ -1,8 +1,6 @@
 package org.linweisen.common.protocol;
 
-public class FileTransferTProtocol extends AbstractProtocol{
-
-    private byte header = 0x01;
+public class FileTransferProtocol extends AbstractProtocol{
 
     private String fileName;
 
@@ -13,6 +11,10 @@ public class FileTransferTProtocol extends AbstractProtocol{
     private String id;
 
     private byte[] content;
+
+    public FileTransferProtocol() {
+        super((byte)0x01);
+    }
 
     public String getFileName() {
         return fileName;
@@ -30,8 +32,4 @@ public class FileTransferTProtocol extends AbstractProtocol{
         this.segment = segment;
     }
 
-    @Override
-    public byte getType() {
-        return this.header;
-    }
 }
