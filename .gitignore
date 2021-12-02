@@ -1,0 +1,22 @@
+##############################
+## Folders                  ##
+##############################
+target
+.settings
+node_modules
+*.log
+*.log.*
+bin
+log
+
+##############################
+## project files            ##
+##############################
+vim.exe.stackdump
+.project
+.classpath
+.factorypath
+.idea
+*.iml
+*.pdb
+*.DS_Store
