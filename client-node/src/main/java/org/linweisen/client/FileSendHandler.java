@@ -9,7 +9,8 @@ public class FileSendHandler extends SimpleChannelInboundHandler<AbstractProtoco
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, AbstractProtocol protocol) throws Exception {
-        channelHandlerContext.writeAndFlush(protocol);
+
+//        channelHandlerContext.writeAndFlush(protocol);
     }
 
 
