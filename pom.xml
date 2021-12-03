@@ -4,20 +4,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.linweisen</groupId>
-    <artifactId>SimpleDFS</artifactId>
+    <groupId>org.simpledfs</groupId>
+    <artifactId>simple-dfs</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>master-node</module>
-        <module>work-node</module>
-        <module>client-node</module>
-        <module>common</module>
+        <module>simple-dfs-master</module>
+        <module>simple-dfs-work</module>
+        <module>simple-dfs-client</module>
+        <module>simple-dfs-core</module>
     </modules>
     <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <java.encoding>UTF-8</java.encoding>
+        <project-version>1.0.0</project-version>
+        <netty.version>4.1.42.Final</netty.version>
+        <kryo.version>5.1.0</kryo.version>
     </properties>
 
     <dependencyManagement>
@@ -25,7 +29,12 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
-                <version>4.1.42.Final</version>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.esotericsoftware</groupId>
+                <artifactId>kryo</artifactId>
+                <version>${kryo.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
