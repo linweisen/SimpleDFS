@@ -7,14 +7,23 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class DefaultClient implements Client{
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(DefaultClientHandler.class);
 
     private ServerInfo serverInfo;
 
     private volatile boolean connected = false;
 
     private Channel channel = null;
+
+    public DefaultClient() {
+        LOGGER.info("初始化...");
+    }
 
     @Override
     public void connect() {
@@ -48,5 +57,9 @@ public class DefaultClient implements Client{
                 }
             }
         });
+    }
+
+    public static void main(String[] args) {
+        DefaultClient client = new DefaultClient();
     }
 }
