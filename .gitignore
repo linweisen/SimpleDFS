@@ -3,7 +3,6 @@
 ##############################
 target
 .settings
-node_modules
 *.log
 *.log.*
 bin
