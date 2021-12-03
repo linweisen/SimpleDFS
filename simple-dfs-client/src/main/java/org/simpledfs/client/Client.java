@@ -1,7 +1,6 @@
 package org.simpledfs.client;
 
-import java.util.concurrent.CompletableFuture;
-//import org.simpledfs.core
+//import java.util.concurrent.CompletableFuture;
 
 public interface Client {
 
