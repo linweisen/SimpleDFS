@@ -13,7 +13,7 @@ public class WorkServerInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline pipeline = channel.pipeline();
-//        pipeline.addLast(new ProtocolDispatcher(channelListener));
+        pipeline.addLast(new PacketDispatcher());
     }
 
 }

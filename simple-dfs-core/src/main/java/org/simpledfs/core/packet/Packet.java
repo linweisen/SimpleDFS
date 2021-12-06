@@ -27,15 +27,65 @@ import java.io.Serializable;
  */
 public class Packet implements Serializable {
 
-    private byte MAGIC = (byte) 0xDF;
+    public static byte MAGIC_CODE = (byte) 0xDF;
+
+    private byte MAGIC = MAGIC_CODE;
 
     private byte type;
 
     private long id;
 
-    private int length;
-
     private byte serialize;
 
+    private int length;
+
     private byte[] content;
+
+    public byte getMAGIC() {
+        return MAGIC;
+    }
+
+    public void setMAGIC(byte MAGIC) {
+        this.MAGIC = MAGIC;
+    }
+
+    public byte getType() {
+        return type;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public byte getSerialize() {
+        return serialize;
+    }
+
+    public void setSerialize(byte serialize) {
+        this.serialize = serialize;
+    }
+
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
 }

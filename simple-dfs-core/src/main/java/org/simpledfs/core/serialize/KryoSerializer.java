@@ -15,10 +15,16 @@ public class KryoSerializer implements Serializer {
 
     }
 
-    public static Serializer getInstance() {
-//        return Singleton.get(KryoSerializer.class);
-        return null;
+    private static class SingletonHolder {
+
+        private static KryoSerializer serializer = new KryoSerializer();
+
     }
+    public static KryoSerializer getInstance() {
+
+        return SingletonHolder.serializer;
+    }
+
 
     @Override
     public byte[] serialize(Object object) {
