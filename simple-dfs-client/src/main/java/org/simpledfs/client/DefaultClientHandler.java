@@ -13,6 +13,8 @@ public class DefaultClientHandler extends SimpleChannelInboundHandler<Packet> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet) throws Exception {
+        LOGGER.debug("ClientPacketDispatcher has received {}", packet);
+        byte type = packet.getType();
 
     }
 

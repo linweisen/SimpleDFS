@@ -20,6 +20,11 @@ public class WorkServer {
 
 //    private ChannelListener channelListener;
 
+    public void start(int port){
+        init();
+        doStart(port);
+    }
+
     public void doStart(int port) {
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
@@ -44,22 +49,14 @@ public class WorkServer {
         });
     }
 
+    public void init(){
+        LOGGER.info("start init...");
+    }
+
     public static void main(String[] args) {
-//        ServerStartupParameter param = new ServerStartupParameter();
-//        JCommander.newBuilder()
-//                .addObject(param)
-//                .build()
-//                .parse(args);
-//        ServerMode serverMode = ServerMode.getEnum(param.mode);
-//        RouterServerAttr routerServerAttr = RouterServerAttr.builder()
-//                .address(param.routerAddress)
-//                .port(param.routerPort)
-//                .build();
-//        Integer serverPort = param.serverPort;
-//
-//        ServerBootstrap bootstrap = new ServerBootstrap();
-//        bootstrap.serverMode(serverMode)
-//                .routerServerAttr(routerServerAttr)
-//                .start(serverPort);
+        WorkServer workServer = new WorkServer();
+        workServer.start(8080);
+
+
     }
 }

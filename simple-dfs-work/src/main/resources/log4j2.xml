@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出 ,默认OFF
+    monitorInterval : Log4j能够自动检测修改配置文件和重新配置本身, 设置间隔秒数。
+    %d{yyyy-MM-dd HH:mm:ss, SSS} : 日志生产时间
+    %p : 日志输出格式
+    %c : logger的名称
+    %m : 日志内容，即 logger.info("message")
+    %n : 换行符
+    %C : Java类名
+    %L : 日志输出所在行数
+    %M : 日志输出所在方法名
+    hostName : 本地机器名 hostAddress : 本地ip地址 -->
+
+<Configuration status="debug" monitorInterval="30">
+
+    <properties>
+        <property name="LOG_HOME">./logs/work/</property>
+    </properties>
+    <Appenders>
+        <!--这个输出控制台的配置 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 输出日志的格式 -->
+            <PatternLayout pattern="%d{DEFAULT} %c{1} %p [%t] %m%n"/>
+        </Console>
+
+        <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定是否清空-->
+        <File name="log" fileName="${LOG_HOME}/log/client.log" append="false">
+            <!-- 输出的日志格式 -->
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+
+        <!--这个会打印出所有的信息 每个小时自动按年月日时进行压缩 -->
+        <RollingFile name="appLog"
+                     fileName="${LOG_HOME}info/info.log"
+                     filePattern="${LOG_HOME}info/info.log.%d{yyyy-MM-dd-HH}.log.gz"
+                     append="true"
+        >
+            <!-- 日志打印格式-->
+            <PatternLayout pattern="%d{DEFAULT} | %c{1} | %p | [%t] | %m%n"/>
+            <Policies>
+                <!-- 此处是按时间进行压缩 根据filePattern中的时间格式   每隔一个单位进行压缩-->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <Async name="asyncAppLog">
+            <AppenderRef ref="appLog"/>
+        </Async>
+
+        <!-- error日志格式 -->
+        <!--配置多个Rollingfile地址，还需要在root下添加appender-ref ref="asyncErrorLog"/> 只显示error级别的信息 -->
+        <RollingFile name="errorLog" fileName="${LOG_HOME}error/error.log"
+                     filePattern="${LOG_HOME}error/error.log.%d{yyyy-MM-dd}.log.gz">
+            <!-- 日志打印格式-->
+            <PatternLayout pattern="%d{DEFAULT} | %c{10} | %p | [%t] | %m%n"/>
+            <Policies>
+                <!-- 日志压缩触发条件 -->
+                <!-- 每次日志超过size配置的大小，按filePattern的配置的格式进行压缩-->
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+                <!-- 此处是按时间进行压缩 根据filePattern中的时间格式 每隔一个单位进行压缩 此处是按天压缩-->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <Async name="asyncErrorLog">
+            <AppenderRef ref="errorLog"/>
+        </Async>
+    </Appenders>
+
+    <!--定义logger，只有定义了logger并引入的appender，appender才会生效 -->
+    <Loggers>
+        <!-- 配置日志的根节点，建立一个默认的root的logger，需要在root的level中指定输出的级别  -->
+        <Root level="info">
+            <AppenderRef ref="asyncAppLog"/>
+        </Root>
+        <AsyncLogger name="logger.error" level="info" additivity="false">
+            <AppenderRef ref="asyncErrorLog"/>
+        </AsyncLogger>
+    </Loggers>
+</Configuration>

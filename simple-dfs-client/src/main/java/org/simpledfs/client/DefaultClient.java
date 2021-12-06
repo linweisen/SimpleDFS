@@ -7,8 +7,13 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.simpledfs.core.packet.Packet;
+import org.simpledfs.core.packet.PendingPackets;
+import org.simpledfs.core.req.ClientFileSendRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CompletableFuture;
 
 
 public class DefaultClient implements Client{
@@ -21,7 +26,8 @@ public class DefaultClient implements Client{
 
     private Channel channel = null;
 
-    public DefaultClient() {
+    public DefaultClient(ServerInfo serverInfo) {
+        this.serverInfo = serverInfo;
         LOGGER.info("初始化...");
     }
 
@@ -48,7 +54,7 @@ public class DefaultClient implements Client{
                 channel = future.channel();
                 if (f.isSuccess()) {
                     connected = true;
-//                    log.info("[{}] Has connected to {} successfully", GenericClient.class.getSimpleName(), serverAttr);
+                    LOGGER.info("[{}] Has connected to {} successfully", DefaultClient.class.getSimpleName(), serverInfo);
                 } else {
 //                    log.warn("[{}] Connect to {} failed, cause={}", GenericClient.class.getSimpleName(), serverAttr, f.cause().getMessage());
                     // fire the channelInactive and make sure
@@ -59,7 +65,49 @@ public class DefaultClient implements Client{
         });
     }
 
-    public static void main(String[] args) {
-        DefaultClient client = new DefaultClient();
+    @Override
+    public CompletableFuture<Packet> sendPacket(Packet packet) {
+        // create a promise
+        CompletableFuture<Packet> promise = new CompletableFuture<>();
+        if (!connected) {
+            String msg = "Not connected yet!";
+            LOGGER.debug(msg);
+            return promise;
+        }
+        Long id = packet.getId();
+        PendingPackets.add(id, promise);
+        ChannelFuture future = channel.writeAndFlush(packet);
+        future.addListener(new GenericFutureListener<Future<? super Void>>() {
+            @Override
+            public void operationComplete(Future<? super Void> f) throws Exception {
+                if (!f.isSuccess()) {
+                    CompletableFuture<Packet> pending = PendingPackets.remove(id);
+                    if (pending != null) {
+                        pending.completeExceptionally(f.cause());
+                    }
+                }
+            }
+        });
+        return promise;
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        ServerInfo serverInfo = new ServerInfo("127.0.0.1", 8080);
+        DefaultClient client = new DefaultClient(serverInfo);
+        client.connect();
+        Packet packet = new Packet();
+        packet.setId(1L);
+        packet.setType((byte)0x01);
+        packet.setSerialize((byte)1);
+        ClientFileSendRequest request = new ClientFileSendRequest();
+        request.setIndex(0);
+        request.setSegment(1);
+        request.setFileName("测试文件");
+        packet.setRequest(request);
+        while (!client.connected){
+            Thread.sleep(1000);
+        }
+        client.sendPacket(packet);
+
     }
 }

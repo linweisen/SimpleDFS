@@ -89,14 +89,8 @@ public class PacketMessageCodec extends ByteToMessageCodec<Packet> {
             return false;
         }
 
-        byte type = packet.getType();
-        if (type != Packet.MAGIC_CODE){
-            LOGGER.error("type={} is invalid with packet={}", type, packet);
-            return false;
-        }
-
         long id = packet.getId();
-        if (id != Packet.MAGIC_CODE){
+        if (id == 0){
             LOGGER.error("id={} is invalid with packet={}", id, packet);
             return false;
         }

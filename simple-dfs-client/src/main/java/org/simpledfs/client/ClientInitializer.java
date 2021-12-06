@@ -20,7 +20,6 @@ public class ClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline pipeline = channel.pipeline();
-//        BaseConfig baseConfig = ConfigFactory.getConfig(BaseConfig.class);
 //        pipeline.addLast(new IdleStateChecker(baseConfig.readerIdleTime()));
         pipeline.addLast(new PacketMessageCodec());
 //        pipeline.addLast(new HealthyChecker(client, baseConfig.pingInterval()));

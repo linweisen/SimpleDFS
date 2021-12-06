@@ -2,6 +2,10 @@ package org.simpledfs.client;
 
 //import java.util.concurrent.CompletableFuture;
 
+import org.simpledfs.core.packet.Packet;
+
+import java.util.concurrent.CompletableFuture;
+
 public interface Client {
 
     void connect();
@@ -12,5 +16,5 @@ public interface Client {
      * @param request the request packet
      * @return the response future
      */
-//    CompletableFuture<Packet> sendRequest(Packet request);
+    CompletableFuture<Packet> sendPacket(Packet packet);
 }
