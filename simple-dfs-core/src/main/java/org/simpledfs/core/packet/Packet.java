@@ -1,5 +1,8 @@
 package org.simpledfs.core.packet;
 
+import org.simpledfs.core.req.Request;
+import org.simpledfs.core.req.Response;
+
 import java.io.Serializable;
 
 /**
@@ -39,7 +42,9 @@ public class Packet implements Serializable {
 
     private int length;
 
-    private byte[] content;
+    private Request request;
+
+    private Response response;
 
     public byte getMAGIC() {
         return MAGIC;
@@ -81,11 +86,19 @@ public class Packet implements Serializable {
         this.serialize = serialize;
     }
 
-    public byte[] getContent() {
-        return content;
+    public Request getRequest() {
+        return request;
     }
 
-    public void setContent(byte[] content) {
-        this.content = content;
+    public void setRequest(Request request) {
+        this.request = request;
+    }
+
+    public Response getResponse() {
+        return response;
+    }
+
+    public void setResponse(Response response) {
+        this.response = response;
     }
 }
