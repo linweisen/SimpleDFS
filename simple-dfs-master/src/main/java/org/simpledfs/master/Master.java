@@ -20,24 +20,38 @@ public class Master {
 
     private Configuration config;
 
-    public Master(String masterConfigFile) {
+    public Master(Command command) {
+        String masterConfigFile = command.getFile();
         Properties properties = ConfigurationParser.read(masterConfigFile);
         if (properties == null){
             LOGGER.error("configuration parse filed");
             System.exit(0);
         }
-        this.config = new Configuration(ConfigurationParser.read(masterConfigFile));
-        MasterServerInitializer initializer = new MasterServerInitializer();
-        int port = this.config.getInt("master.port", 8080);
-        this.server = new DefaultServer(Master.class, initializer, port);
+        this.config = new Configuration(properties);
+        init();
     }
 
     public void start(){
-        init();
+        this.server.start();
     }
 
     public void init(){
         LOGGER.info("start init...");
+        shutdownHook();
+        MasterServerInitializer initializer = new MasterServerInitializer();
+        int port = this.config.getInt("master.port", 8080);
+        this.server = new DefaultServer(Master.class, initializer, port);
+
+    }
+
+    public void shutdownHook(){
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                LOGGER.info("release...");
+            }
+        }, "shutdownHook-thread");
+        t.setDaemon(true);
+        Runtime.getRuntime().addShutdownHook(t);
     }
 
     public static void main(String[] args) {
@@ -58,7 +72,7 @@ public class Master {
             jct.usage();
             System.exit(0);
         }
-        String file = "src/main/resources/generator.xml";
-        Master workServer = new Master(file);
+        Master master = new Master(command);
+
     }
 }

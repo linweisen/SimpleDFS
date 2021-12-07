@@ -15,7 +15,7 @@
 <Configuration status="debug" monitorInterval="30">
 
     <properties>
-        <property name="LOG_HOME">./logs/work/</property>
+        <property name="LOG_HOME">./logs/master/</property>
     </properties>
     <Appenders>
         <!--这个输出控制台的配置 -->
