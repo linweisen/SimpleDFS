@@ -5,6 +5,11 @@ import org.simpledfs.core.packet.Packet;
 public class DefaultClient implements Client {
 
     @Override
+    public void start() {
+
+    }
+
+    @Override
     public void send(Packet packet) {
 
     }
