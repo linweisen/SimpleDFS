@@ -22,6 +22,7 @@
         <kryo.version>5.1.0</kryo.version>
         <log4j.version>2.8.2</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
+        <apache.commons.version>3.7</apache.commons.version>
     </properties>
 
     <dependencyManagement>
@@ -35,6 +36,11 @@
                 <groupId>com.esotericsoftware</groupId>
                 <artifactId>kryo</artifactId>
                 <version>${kryo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.commons.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
