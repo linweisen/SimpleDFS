@@ -73,6 +73,7 @@ public class Master {
             System.exit(0);
         }
         Master master = new Master(command);
+        master.start();
 
     }
 }

@@ -15,7 +15,7 @@
 <Configuration status="debug" monitorInterval="30">
 
     <properties>
-        <property name="LOG_HOME">./logs/master/</property>
+        <property name="LOG_HOME">./logs/master</property>
     </properties>
     <Appenders>
         <!--这个输出控制台的配置 -->
@@ -27,7 +27,7 @@
         </Console>
 
         <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定是否清空-->
-        <File name="log" fileName="${LOG_HOME}/log/client.log" append="false">
+        <File name="log" fileName="${LOG_HOME}/log/master.log" append="false">
             <!-- 输出的日志格式 -->
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
         </File>

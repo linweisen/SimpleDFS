@@ -45,6 +45,7 @@ public class DefaultServer implements Server {
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
         StopWatch watch = new StopWatch();
+        watch.start();
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.option(ChannelOption.SO_BACKLOG, 1024);
         bootstrap.group(bossGroup, workerGroup)

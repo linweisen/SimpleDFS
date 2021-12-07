@@ -8,4 +8,6 @@ public abstract class AbstractRequestProcessor implements Processor {
     public void process(ChannelHandlerContext ctx, Packet packet){
 
     }
+
+    public abstract void doProcess();
 }
