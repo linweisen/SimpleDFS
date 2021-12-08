@@ -5,20 +5,15 @@ import org.simpledfs.core.packet.Packet;
 
 public abstract class AbstractRequestProcessor implements Processor {
 
-    public void process(ChannelHandlerContext ctx, Packet packet){
-
-    }
-
-    public abstract void doProcess();
-
+    public abstract void process();
 
     @Override
     public void run() {
-
+        process();
 
     }
 
-    private void writeResponse(ChannelHandlerContext ctx, Packet response) {
+    protected void writeResponse(ChannelHandlerContext ctx, Packet response) {
         if (response != null) {
             ctx.channel().writeAndFlush(response);
         }

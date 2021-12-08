@@ -15,9 +15,11 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor{
         this.request = (MkdirRequest) request;
     }
 
+
     @Override
-    public void doProcess() {
+    public void process() {
+        String name = request.getName();
 
+//        writeResponse(ctx);
     }
-
 }

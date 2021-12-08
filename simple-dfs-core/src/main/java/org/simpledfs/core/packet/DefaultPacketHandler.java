@@ -3,6 +3,7 @@ package org.simpledfs.core.packet;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.simpledfs.core.excutor.Actuator;
+import org.simpledfs.core.excutor.DefaultActuator;
 import org.simpledfs.core.req.Request;
 import org.simpledfs.core.utils.RequestResponseUtils;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ public class DefaultPacketHandler extends SimpleChannelInboundHandler<Packet> {
     private Actuator<Packet> actuator;
 
     public DefaultPacketHandler() {
-
+        actuator = new DefaultActuator<>();
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
+import org.simpledfs.core.dir.Directory;
 import org.simpledfs.core.dir.IDirectory;
 import org.simpledfs.core.net.DefaultServer;
 import org.simpledfs.core.net.Server;
@@ -45,6 +46,7 @@ public class Master {
         int port = this.config.getInt("master.port", 8080);
         this.server = new DefaultServer(Master.class, initializer, port);
 
+        root = new Directory();
     }
 
     public void shutdownHook(){

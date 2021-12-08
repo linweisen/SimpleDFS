@@ -5,5 +5,5 @@ import org.simpledfs.core.packet.Packet;
 
 public interface Processor extends Runnable{
 
-    public void process(ChannelHandlerContext ctx, Packet packet);
+    public void process();
 }
