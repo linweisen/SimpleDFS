@@ -3,6 +3,7 @@ package org.simpledfs.core.packet;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.simpledfs.core.excutor.Actuator;
+import org.simpledfs.core.req.Request;
 import org.simpledfs.core.utils.RequestResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,15 +36,11 @@ public class DefaultPacketHandler extends SimpleChannelInboundHandler<Packet> {
     }
 
     private void onRequest(ChannelHandlerContext ctx, Packet packet) {
-        Packet response = actuator.execute(ctx, packet);
-        writeResponse(ctx, response);
+        Request request = packet.getRequest();
+        actuator.execute(ctx, request);
     }
 
-    private void writeResponse(ChannelHandlerContext ctx, Packet response) {
-        if (response != null) {
-            ctx.channel().writeAndFlush(response);
-        }
-    }
+
 
     private void onResponse(Packet packet) {
 

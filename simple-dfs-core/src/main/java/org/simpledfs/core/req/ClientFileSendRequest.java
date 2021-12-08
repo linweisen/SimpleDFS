@@ -55,4 +55,6 @@ public class ClientFileSendRequest extends AbstractRequest {
     public void setContent(byte[] content) {
         this.content = content;
     }
+
+
 }

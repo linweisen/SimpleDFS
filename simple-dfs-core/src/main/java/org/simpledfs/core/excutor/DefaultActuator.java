@@ -1,15 +1,13 @@
 package org.simpledfs.core.excutor;
 
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.DefaultThreadFactory;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.Promise;
+import org.simpledfs.core.packet.Packet;
+import org.simpledfs.core.req.Request;
 
-import java.util.Map;
 import java.util.concurrent.*;
 
 public class DefaultActuator<T> implements Actuator<T> {
-
-    private Map<String, Processor> processorHolder = new ConcurrentHashMap<>();
 
     private Executor executor;
 
@@ -20,12 +18,13 @@ public class DefaultActuator<T> implements Actuator<T> {
                 5,
                 TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(100),
-                new DefaultThreadFactory("event-executor-pool", true));
+                new DefaultThreadFactory("packet-executor-pool", true));
     }
 
     @Override
-    public T execute(Object... request) {
-        return null;
+    public void execute(ChannelHandlerContext ctx, Request request) {
+        Processor processor = request.buildSelfProcessor(ctx, request);
+        executor.execute(processor);
     }
 
 }
