@@ -10,4 +10,10 @@ public abstract class AbstractRequestProcessor implements Processor {
     }
 
     public abstract void doProcess();
+
+
+    @Override
+    public void run() {
+
+    }
 }

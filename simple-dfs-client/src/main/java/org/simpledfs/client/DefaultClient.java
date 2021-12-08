@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.CompletableFuture;
 
 
-public class DefaultClient implements Client{
+public class DefaultClient implements Client {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(DefaultClientHandler.class);
 
