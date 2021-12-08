@@ -12,7 +12,7 @@
     %M : 日志输出所在方法名
     hostName : 本地机器名 hostAddress : 本地ip地址 -->
 
-<Configuration status="debug" monitorInterval="30">
+<Configuration status="info" monitorInterval="30">
 
     <properties>
         <property name="LOG_HOME">./logs/master</property>
@@ -34,10 +34,9 @@
 
         <!--这个会打印出所有的信息 每个小时自动按年月日时进行压缩 -->
         <RollingFile name="appLog"
-                     fileName="${LOG_HOME}info/info.log"
+                     fileName="${LOG_HOME}/info/info.log"
                      filePattern="${LOG_HOME}info/info.log.%d{yyyy-MM-dd-HH}.log.gz"
-                     append="true"
-        >
+                     append="true">
             <!-- 日志打印格式-->
             <PatternLayout pattern="%d{DEFAULT} | %c{1} | %p | [%t] | %m%n"/>
             <Policies>
@@ -53,7 +52,7 @@
         <!-- error日志格式 -->
         <!--配置多个Rollingfile地址，还需要在root下添加appender-ref ref="asyncErrorLog"/> 只显示error级别的信息 -->
         <RollingFile name="errorLog" fileName="${LOG_HOME}error/error.log"
-                     filePattern="${LOG_HOME}error/error.log.%d{yyyy-MM-dd}.log.gz">
+                     filePattern="${LOG_HOME}/error/error.log.%d{yyyy-MM-dd}.log.gz">
             <!-- 日志打印格式-->
             <PatternLayout pattern="%d{DEFAULT} | %c{10} | %p | [%t] | %m%n"/>
             <Policies>
@@ -72,9 +71,9 @@
     <!--定义logger，只有定义了logger并引入的appender，appender才会生效 -->
     <Loggers>
         <!-- 配置日志的根节点，建立一个默认的root的logger，需要在root的level中指定输出的级别  -->
-        <Root level="info">
-            <AppenderRef ref="asyncAppLog"/>
-        </Root>
+        <root level="debug">
+            <appender-ref ref="Console"/>
+        </root>
         <AsyncLogger name="logger.error" level="info" additivity="false">
             <AppenderRef ref="asyncErrorLog"/>
         </AsyncLogger>

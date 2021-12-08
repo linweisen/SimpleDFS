@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
+import org.simpledfs.core.dir.IDirectory;
 import org.simpledfs.core.net.DefaultServer;
 import org.simpledfs.core.net.Server;
 
@@ -19,6 +20,8 @@ public class Master {
     private Server server;
 
     private Configuration config;
+
+    private IDirectory root;
 
     public Master(Command command) {
         String masterConfigFile = command.getFile();
