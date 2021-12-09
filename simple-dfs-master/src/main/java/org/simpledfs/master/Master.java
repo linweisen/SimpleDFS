@@ -24,6 +24,8 @@ public class Master {
 
     private IDirectory root;
 
+    private MasterContext context;
+
     public Master(Command command) {
         String masterConfigFile = command.getFile();
         Properties properties = ConfigurationParser.read(masterConfigFile);
@@ -42,10 +44,9 @@ public class Master {
     public void init(){
         LOGGER.info("start init...");
         shutdownHook();
-        MasterServerInitializer initializer = new MasterServerInitializer();
+        MasterServerInitializer initializer = new MasterServerInitializer(context);
         int port = this.config.getInt("master.port", 8080);
         this.server = new DefaultServer(Master.class, initializer, port);
-
         root = new Directory();
     }
 

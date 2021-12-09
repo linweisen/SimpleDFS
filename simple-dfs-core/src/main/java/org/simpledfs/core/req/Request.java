@@ -25,5 +25,5 @@ public interface Request {
 
     byte getType();
 
-    Processor buildSelfProcessor(ChannelHandlerContext ctx, Request request);
+    Processor buildSelfProcessor(ChannelHandlerContext ctx, Request request, Object... params);
 }

@@ -22,8 +22,8 @@ public class DefaultActuator<T> implements Actuator<T> {
     }
 
     @Override
-    public void execute(ChannelHandlerContext ctx, Request request) {
-        Processor processor = request.buildSelfProcessor(ctx, request);
+    public void execute(ChannelHandlerContext ctx, Request request, Object... params) {
+        Processor processor = request.buildSelfProcessor(ctx, request, params);
         executor.execute(processor);
     }
 

@@ -2,7 +2,6 @@ package org.simpledfs.core.excutor;
 
 
 import io.netty.channel.ChannelHandlerContext;
-import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.req.Request;
 
 /**
@@ -11,7 +10,7 @@ import org.simpledfs.core.req.Request;
 public interface Actuator<T> {
 
 
-    void execute(ChannelHandlerContext ctx, Request request);
+    void execute(ChannelHandlerContext ctx, Request request, Object... params);
 
 
 }

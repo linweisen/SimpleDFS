@@ -17,7 +17,7 @@ public abstract class AbstractRequest implements Request{
     }
 
     @Override
-    public Processor buildSelfProcessor(ChannelHandlerContext ctx, Request request){
+    public Processor buildSelfProcessor(ChannelHandlerContext ctx, Request request, Object... params){
         return null;
     }
 }

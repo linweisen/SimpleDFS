@@ -6,9 +6,15 @@ import io.netty.channel.socket.SocketChannel;
 
 public class MasterServerInitializer extends ChannelInitializer<SocketChannel> {
 
+    private MasterContext context;
+
+    public MasterServerInitializer(MasterContext context) {
+        this.context = context;
+    }
+
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline pipeline = channel.pipeline();
-        pipeline.addLast(new PacketDispatcher());
+        pipeline.addLast(new PacketDispatcher(context));
     }
 }

@@ -1,22 +1,23 @@
-package org.simpledfs.core.packet;
+package org.simpledfs.master;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.simpledfs.core.excutor.Actuator;
 import org.simpledfs.core.excutor.DefaultActuator;
+import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.req.Request;
 import org.simpledfs.core.utils.RequestResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class DefaultPacketHandler extends SimpleChannelInboundHandler<Packet> {
+public class DefaultMasterPacketHandler extends SimpleChannelInboundHandler<Packet> {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(DefaultPacketHandler.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(DefaultMasterPacketHandler.class);
 
     private Actuator<Packet> actuator;
 
-    public DefaultPacketHandler() {
+    public DefaultMasterPacketHandler() {
         actuator = new DefaultActuator<>();
     }
 

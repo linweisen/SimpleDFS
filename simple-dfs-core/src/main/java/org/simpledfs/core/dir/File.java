@@ -15,4 +15,9 @@ public class File extends IDirectory {
     public List<IDirectory> getChildren() {
         return null;
     }
+
+    @Override
+    public IDirectory findDirectory(String name) {
+        return null;
+    }
 }

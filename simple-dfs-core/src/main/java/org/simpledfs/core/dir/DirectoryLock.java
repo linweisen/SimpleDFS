@@ -4,9 +4,7 @@ import org.simpledfs.core.exception.NonDirectoryException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DirectoryLock {
@@ -21,12 +19,12 @@ public class DirectoryLock {
         return DirectoryLockHolder.directoryLock;
     }
 
-    public void lock(String directory){
+    public ReadWriteLock getLock(String directory){
         ReadWriteLock lock = lockMap.get(directory);
         if (lock == null){
             throw new NonDirectoryException();
         }
-        lock.readLock();
+        return lock;
     }
 
     public void unlock(String directory){
