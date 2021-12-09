@@ -1,6 +1,7 @@
 package org.simpledfs.core.req;
 
 import io.netty.channel.ChannelHandlerContext;
+import org.simpledfs.core.context.Context;
 import org.simpledfs.core.excutor.Processor;
 import org.simpledfs.core.packet.Packet;
 
@@ -25,5 +26,5 @@ public interface Request {
 
     byte getType();
 
-    Processor buildSelfProcessor(ChannelHandlerContext ctx, Request request, Object... params);
+    Processor buildSelfProcessor(ChannelHandlerContext ctx, Request request, Context context, Long packetId);
 }

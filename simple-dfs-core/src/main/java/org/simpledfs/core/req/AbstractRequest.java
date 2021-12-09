@@ -1,9 +1,10 @@
 package org.simpledfs.core.req;
 
 import io.netty.channel.ChannelHandlerContext;
+import org.simpledfs.core.context.Context;
 import org.simpledfs.core.excutor.Processor;
 
-public abstract class AbstractRequest implements Request{
+public abstract class AbstractRequest implements Request {
 
     private byte type;
 
@@ -17,7 +18,7 @@ public abstract class AbstractRequest implements Request{
     }
 
     @Override
-    public Processor buildSelfProcessor(ChannelHandlerContext ctx, Request request, Object... params){
+    public Processor buildSelfProcessor(ChannelHandlerContext ctx, Request request, Context context, Long packetId){
         return null;
     }
 }

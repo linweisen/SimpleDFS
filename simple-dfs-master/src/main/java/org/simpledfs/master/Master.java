@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
+import org.simpledfs.core.context.Context;
 import org.simpledfs.core.dir.Directory;
 import org.simpledfs.core.dir.IDirectory;
 import org.simpledfs.core.net.DefaultServer;
@@ -44,10 +45,12 @@ public class Master {
     public void init(){
         LOGGER.info("start init...");
         shutdownHook();
+        root = new Directory();
+        this.context = new MasterContext(root);
         MasterServerInitializer initializer = new MasterServerInitializer(context);
         int port = this.config.getInt("master.port", 8080);
         this.server = new DefaultServer(Master.class, initializer, port);
-        root = new Directory();
+
     }
 
     public void shutdownHook(){

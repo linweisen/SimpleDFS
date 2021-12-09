@@ -3,13 +3,15 @@ package org.simpledfs.master.processor;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.simpledfs.core.context.Context;
 import org.simpledfs.core.dir.DirectoryLock;
 import org.simpledfs.core.dir.IDirectory;
 import org.simpledfs.core.excutor.AbstractRequestProcessor;
 import org.simpledfs.core.packet.Packet;
-import org.simpledfs.core.req.MkdirRequest;
 import org.simpledfs.core.req.MkdirResponse;
 import org.simpledfs.core.req.Request;
+import org.simpledfs.master.MasterContext;
+import org.simpledfs.master.req.MkdirRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +25,14 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
 
     private MkdirRequest request;
 
-    private IDirectory root;
+    private MasterContext context;
 
     private long requestId;
 
-    public MkdirRequestProcessor(ChannelHandlerContext ctx, Request request, IDirectory root, long requestId) {
+    public MkdirRequestProcessor(ChannelHandlerContext ctx, Request request, Context context, long requestId) {
         this.ctx = ctx;
         this.request = (MkdirRequest) request;
-        this.root = root;
+        this.context = (MasterContext) context;
         this.requestId = requestId;
     }
 
@@ -45,6 +47,7 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
         List<String> directoryLevel = getDirectoryLevel(request.getParent());
         String topParent = getTopParent(directoryLevel);
         Lock writeLock = DirectoryLock.getInstance().getLock(topParent).writeLock();
+        IDirectory root = this.context.getRoot();
         try {
             writeLock.lock();
             StringBuilder path = new StringBuilder();

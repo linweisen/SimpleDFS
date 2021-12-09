@@ -42,7 +42,7 @@ public class PacketDispatcher extends ByteToMessageDecoder {
     private void dispatchToPacket(ChannelHandlerContext ctx) {
         ChannelPipeline pipeline = ctx.pipeline();
         pipeline.addLast(new PacketMessageCodec());
-        pipeline.addLast(new DefaultMasterPacketHandler());
+        pipeline.addLast(new DefaultMasterPacketHandler(context));
         // 将所有所需的ChannelHandler添加到pipeline之后，一定要将自身移除掉
         // 否则该Channel之后的请求仍会重新执行协议的分发，而这是要避免的
         pipeline.remove(this);

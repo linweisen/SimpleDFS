@@ -17,8 +17,11 @@ public class DefaultMasterPacketHandler extends SimpleChannelInboundHandler<Pack
 
     private Actuator<Packet> actuator;
 
-    public DefaultMasterPacketHandler() {
-        actuator = new DefaultActuator<>();
+    private MasterContext context;
+
+    public DefaultMasterPacketHandler(MasterContext context) {
+        this.actuator = new DefaultActuator<>();
+        this.context = context;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class DefaultMasterPacketHandler extends SimpleChannelInboundHandler<Pack
 
     private void onRequest(ChannelHandlerContext ctx, Packet packet) {
         Request request = packet.getRequest();
-        actuator.execute(ctx, request);
+        actuator.execute(ctx, request, context, packet.getId());
     }
 
 

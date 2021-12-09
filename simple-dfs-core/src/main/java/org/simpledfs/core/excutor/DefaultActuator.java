@@ -2,6 +2,7 @@ package org.simpledfs.core.excutor;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.DefaultThreadFactory;
+import org.simpledfs.core.context.Context;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.req.Request;
 
@@ -22,8 +23,8 @@ public class DefaultActuator<T> implements Actuator<T> {
     }
 
     @Override
-    public void execute(ChannelHandlerContext ctx, Request request, Object... params) {
-        Processor processor = request.buildSelfProcessor(ctx, request, params);
+    public void execute(ChannelHandlerContext ctx, Request request, Context context, Long packetId) {
+        Processor processor = request.buildSelfProcessor(ctx, request, context, packetId);
         executor.execute(processor);
     }
 

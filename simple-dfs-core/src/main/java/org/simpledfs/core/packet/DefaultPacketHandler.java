@@ -38,7 +38,7 @@ public class DefaultPacketHandler extends SimpleChannelInboundHandler<Packet> {
 
     private void onRequest(ChannelHandlerContext ctx, Packet packet) {
         Request request = packet.getRequest();
-        actuator.execute(ctx, request);
+//        actuator.execute(ctx, request, con);
     }
 
 
