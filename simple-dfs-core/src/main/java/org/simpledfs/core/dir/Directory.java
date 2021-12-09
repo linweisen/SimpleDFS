@@ -19,6 +19,9 @@ public class Directory extends IDirectory {
 
     @Override
     public IDirectory findDirectory(String name) {
+        if (childrenList == null){
+            return null;
+        }
         for (IDirectory directory : childrenList){
             if (directory.getName().equals(name)){
                 return directory;

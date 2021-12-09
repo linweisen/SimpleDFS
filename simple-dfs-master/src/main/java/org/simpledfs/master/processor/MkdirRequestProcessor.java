@@ -44,25 +44,33 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
         MkdirResponse response = new MkdirResponse();
 
         String name = request.getName();
-        List<String> directoryLevel = getDirectoryLevel(request.getParent());
+
+        String[] directoryLevel = getDirectoryLevel(request.getParent());
+
         String topParent = getTopParent(directoryLevel);
         Lock writeLock = DirectoryLock.getInstance().getLock(topParent).writeLock();
         IDirectory root = this.context.getRoot();
         try {
             writeLock.lock();
+            IDirectory newDir = null;
             StringBuilder path = new StringBuilder();
-            IDirectory des = null;
-            for (String d : directoryLevel){
-                des = root.findDirectory(d);
-                if (des.isDirectory()){
-                    path.append(d);
-                }else{
-                    LOGGER.error("directory is not exits...");
-                    response.setMessage(path + "directory is not exits...");
-                    break;
+            if (directoryLevel == null){
+                newDir = root.createChildDir(name);
+                path.append(IDirectory.SEPARATOR + name);
+            }else{
+                IDirectory des = null;
+                for (String d : directoryLevel){
+                    des = root.findDirectory(d);
+                    if (des.isDirectory()){
+                        path.append(d);
+                    }else{
+                        LOGGER.error("directory is not exits...");
+                        response.setMessage(path + "directory is not exits...");
+                        break;
+                    }
                 }
+                newDir = des.createChildDir(name);
             }
-            IDirectory newDir = des.createChildDir(name);
             if (newDir == null){
                 response.setMessage(path + "directory make filed...");
             }else{
@@ -72,38 +80,31 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
             writeLock.unlock();
         }
         packet.setResponse(response);
-        writeResponse(ctx, packet);
+//        writeResponse(ctx, packet);
     }
 
-    private List<String> getDirectoryLevel(String parent){
-        List<String> directoryList = new ArrayList<>();
-        directoryList.add(IDirectory.SEPARATOR);
+    /**
+     *
+     * @param parent
+     * @return
+     */
+    private String[] getDirectoryLevel(String parent){
         if (parent == null){
-            return directoryList;
-        }
-        if (parent.length() == 1){
-            return directoryList;
+            return null;
         }
         StringBuilder tmp = new StringBuilder(parent);
         if (!parent.endsWith(IDirectory.SEPARATOR)){
             tmp.append(IDirectory.SEPARATOR);
         }
-        tmp.deleteCharAt(0);
-        int index = tmp.indexOf(IDirectory.SEPARATOR);
-        while (index != -1){
-            directoryList.add(tmp.substring(index));
-            tmp.delete(0,index);
-            index = tmp.indexOf(IDirectory.SEPARATOR);
-        }
-        return directoryList;
+        return parent.split("/");
     }
 
-    private String getTopParent(List<String> directoryLevel){
-        if (directoryLevel.size() == 1){
-            return directoryLevel.get(0);
+    private String getTopParent(String[] directoryLevel){
+        if (directoryLevel == null || directoryLevel.length == 0){
+            return IDirectory.SEPARATOR;
         }
-        return directoryLevel.get(0) + directoryLevel.get(1);
 
+        return directoryLevel[0];
     }
 
 }
