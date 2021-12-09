@@ -12,9 +12,13 @@ public abstract class IDirectory {
 
     public abstract boolean isDirectory();
 
-    public abstract List<IDirectory> getChildren();
+    public List<IDirectory> getChildren(){
+        return null;
+    }
 
-    public abstract IDirectory findDirectory(String name);
+    public IDirectory findDirectory(String name){
+        return null;
+    }
 
     public IDirectory createChildDir(String name){
         return null;

@@ -21,15 +21,15 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
 
     private static Logger LOGGER = LogManager.getLogger(MkdirRequestProcessor.class);
 
-    public MkdirRequestProcessor(ChannelHandlerContext ctx, Request request, Context context, long requestId) {
-        super(ctx, request, context, requestId);
+    public MkdirRequestProcessor(ChannelHandlerContext ctx, Request request, Context context, long packetId) {
+        super(ctx, request, context, packetId);
     }
 
     @Override
     public void process() {
         MkdirRequest mkdirRequest = (MkdirRequest)request;
         Packet packet = new Packet();
-        packet.setId(requestId);
+        packet.setId(packetId);
         packet.setType((byte)0x81);
         MkdirResponse response = new MkdirResponse();
 

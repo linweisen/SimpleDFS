@@ -13,13 +13,13 @@ public abstract class AbstractRequestProcessor implements Processor {
 
     protected Context context;
 
-    protected long requestId;
+    protected long packetId;
 
-    public AbstractRequestProcessor(ChannelHandlerContext ctx, Request request, Context context, long requestId) {
+    public AbstractRequestProcessor(ChannelHandlerContext ctx, Request request, Context context, long packetId) {
         this.ctx = ctx;
         this.request = request;
         this.context = context;
-        this.requestId = requestId;
+        this.packetId = packetId;
     }
 
     public abstract void process();
@@ -35,5 +35,11 @@ public abstract class AbstractRequestProcessor implements Processor {
         }
     }
 
+    protected Packet buildResponsePacket(){
+        Packet packet = new Packet();
+        packet.setId(packetId);
+        packet.setType((byte)(request.getType() & (byte) 0x80));
+        return packet;
+    }
 
 }
