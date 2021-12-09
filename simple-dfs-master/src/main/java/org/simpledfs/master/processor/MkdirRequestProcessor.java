@@ -21,35 +21,25 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
 
     private static Logger LOGGER = LogManager.getLogger(MkdirRequestProcessor.class);
 
-    private ChannelHandlerContext ctx;
-
-    private MkdirRequest request;
-
-    private MasterContext context;
-
-    private long requestId;
-
     public MkdirRequestProcessor(ChannelHandlerContext ctx, Request request, Context context, long requestId) {
-        this.ctx = ctx;
-        this.request = (MkdirRequest) request;
-        this.context = (MasterContext) context;
-        this.requestId = requestId;
+        super(ctx, request, context, requestId);
     }
 
     @Override
     public void process() {
+        MkdirRequest mkdirRequest = (MkdirRequest)request;
         Packet packet = new Packet();
         packet.setId(requestId);
         packet.setType((byte)0x81);
         MkdirResponse response = new MkdirResponse();
 
-        String name = request.getName();
+        String name = mkdirRequest.getName();
 
-        String[] directoryLevel = getDirectoryLevel(request.getParent());
+        String[] directoryLevel = getDirectoryLevel(mkdirRequest.getParent());
 
         String topParent = getTopParent(directoryLevel);
         Lock writeLock = DirectoryLock.getInstance().getLock(topParent).writeLock();
-        IDirectory root = this.context.getRoot();
+        IDirectory root = ((MasterContext)this.context).getRoot();
         try {
             writeLock.lock();
             IDirectory newDir = null;
