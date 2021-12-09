@@ -9,6 +9,7 @@ import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
 import org.simpledfs.core.context.Context;
 import org.simpledfs.core.dir.Directory;
+import org.simpledfs.core.dir.DirectoryLock;
 import org.simpledfs.core.dir.IDirectory;
 import org.simpledfs.core.net.DefaultServer;
 import org.simpledfs.core.net.Server;
@@ -45,8 +46,12 @@ public class Master {
     public void init(){
         LOGGER.info("start init...");
         shutdownHook();
+        //init root directory
         root = new Directory();
+        root.setName("/");
+        DirectoryLock.getInstance().addLock(root.getName());
         this.context = new MasterContext(root);
+        //init network connect
         MasterServerInitializer initializer = new MasterServerInitializer(context);
         int port = this.config.getInt("master.port", 8080);
         this.server = new DefaultServer(Master.class, initializer, port);

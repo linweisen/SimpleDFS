@@ -10,6 +10,7 @@ import io.netty.util.concurrent.GenericFutureListener;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.packet.PendingPackets;
 import org.simpledfs.core.req.ClientFileSendRequest;
+import org.simpledfs.master.req.MkdirRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,6 @@ public class DefaultClient implements Client {
 
     @Override
     public void connect() {
-//        Assert.notNull(serverAttr, "serverAttr can not be null");
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group)
@@ -99,10 +99,10 @@ public class DefaultClient implements Client {
         packet.setId(1L);
         packet.setType((byte)0x01);
         packet.setSerialize((byte)1);
-        ClientFileSendRequest request = new ClientFileSendRequest();
-        request.setIndex(0);
-        request.setSegment(1);
-        request.setFileName("测试文件");
+        MkdirRequest request = new MkdirRequest();
+        request.setName("test");
+//        request.setSegment(1);
+//        request.setFileName("测试文件");
         packet.setRequest(request);
         while (!client.connected){
             Thread.sleep(1000);

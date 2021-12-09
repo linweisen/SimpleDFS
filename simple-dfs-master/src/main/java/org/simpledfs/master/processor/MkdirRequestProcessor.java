@@ -80,7 +80,7 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
             writeLock.unlock();
         }
         packet.setResponse(response);
-//        writeResponse(ctx, packet);
+        writeResponse(ctx, packet);
     }
 
     /**
@@ -96,7 +96,7 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
         if (!parent.endsWith(IDirectory.SEPARATOR)){
             tmp.append(IDirectory.SEPARATOR);
         }
-        return parent.split("/");
+        return parent.split(IDirectory.SEPARATOR);
     }
 
     private String getTopParent(String[] directoryLevel){

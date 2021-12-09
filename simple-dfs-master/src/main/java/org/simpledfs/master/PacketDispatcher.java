@@ -31,7 +31,6 @@ public class PacketDispatcher extends ByteToMessageDecoder {
         int readerIndex = in.readerIndex();
         byte magic = in.getByte(readerIndex);
         if (magic == Packet.MAGIC_CODE){
-            ctx.attr(AttributeKey.valueOf("fs")).set(context);
             dispatchToPacket(ctx);
         }else{
             in.clear();
