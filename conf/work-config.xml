@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property>
+        <name>work.port</name>
+        <value>8090</value>
+    </property>
+    <property>
+        <name>health.checker</name>
+        <value>30</value>
+    </property>
+    <property>
+        <name>idle.state</name>
+        <value>60</value>
+    </property>
+    <property>
+        <name>master.address</name>
+        <value>127.0.0.1:8080</value>
+    </property>
+    <property>
+        <name>storage.path</name>
+        <value>/s/s/</value>
+    </property>
+</configuration>

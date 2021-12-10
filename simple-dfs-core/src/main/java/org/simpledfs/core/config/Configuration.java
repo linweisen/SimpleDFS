@@ -23,4 +23,8 @@ public class Configuration {
     public String getString(String key, String defaultValue){
         return this.properties.getProperty(key, defaultValue);
     }
+
+    public String getString(String key){
+        return getString(key, null);
+    }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PacketDispatcher extends ByteToMessageDecoder {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(WorkServer.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(PacketDispatcher.class);
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> list) throws Exception {
