@@ -1,5 +1,7 @@
 package org.simpledfs.work;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.command.Command;
@@ -31,7 +33,8 @@ public class Work {
     }
 
     public void start() {
-
+        this.client.start();
+        this.server.start();
     }
 
     public void init(){
@@ -67,7 +70,24 @@ public class Work {
     
 
     public static void main(String[] args) {
-        Work workServer = new Work(null);
-//        workServer.start(8080);
+        Command command = new Command();
+        JCommander jct = JCommander.newBuilder()
+                .addObject(command)
+                .build();
+        jct.setProgramName("SimpleDfs Work");
+        try {
+            jct.parse(args);
+            if (command.isHelp()) {
+                jct.usage();
+                return;
+            }
+        }
+        catch (ParameterException e){
+            e.printStackTrace();
+            jct.usage();
+            System.exit(0);
+        }
+        Work work = new Work(command);
+        work.start();
     }
 }

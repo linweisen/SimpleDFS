@@ -16,16 +16,25 @@ import java.io.Serializable;
  * +----------+----------+----------------------------+
  * |  size    |  value   |  intro                     |
  * +----------+----------+----------------------------+
- * | 1 bytes  | 0xBC     |  magic number              |
+ * | 1 bytes  |  0xBC    |  magic number              |
  * | 1 bytes  |          |  type                      |
- * | 8 bytes  |          |  the type 1:req 2:res 3:cmd|
- * | 4 bytes  |          |  content length            |
+ * | 8 bytes  |          |  id                        |
  * | 1 bytes  |          |  serialize  algorithm      |
- * | 1 bytes  |          |  serialize  algorithm      |
+ * | 4 bytes  |          |  length                    |
+ * | X bytes  |          |  body(request|response)    |
  * +----------+----------+----------------------------+
  * </p>
  *
- *
+ * <p>
+ * The type of a Request and Response is like blow:
+ * +---------------+-------------------------------+----------+
+ * |  hexadecimal  |  intro                        | response |
+ * +---------------+-------------------------------+----------+
+ * |    0x00       |  ping request                 |   0x80   |
+ * +---------------+-------------------------------+----------+
+ * |    0x01       |  create directory request     |   0x81   |
+ * +---------------+-------------------------------+----------+
+ * </p>
  * @author linweisen
  */
 public class Packet implements Serializable {
