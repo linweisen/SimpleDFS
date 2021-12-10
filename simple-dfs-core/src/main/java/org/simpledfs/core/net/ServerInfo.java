@@ -30,4 +30,12 @@ public class ServerInfo {
     public void setPort(int port) {
         this.port = port;
     }
+
+    @Override
+    public String toString() {
+        return "ServerInfo{" +
+                "address='" + address + '\'' +
+                ", port=" + port +
+                '}';
+    }
 }

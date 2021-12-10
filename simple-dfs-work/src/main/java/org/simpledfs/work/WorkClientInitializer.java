@@ -9,9 +9,6 @@ import org.simpledfs.core.net.IdleStateChecker;
 import org.simpledfs.core.packet.PacketMessageCodec;
 
 
-/**
- * @author houyi
- */
 public class WorkClientInitializer extends ChannelInitializer<SocketChannel> {
 
     private Client client;

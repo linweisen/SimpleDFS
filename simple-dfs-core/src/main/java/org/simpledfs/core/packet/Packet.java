@@ -59,10 +59,6 @@ public class Packet implements Serializable {
         return MAGIC;
     }
 
-    public void setMAGIC(byte MAGIC) {
-        this.MAGIC = MAGIC;
-    }
-
     public byte getType() {
         return type;
     }

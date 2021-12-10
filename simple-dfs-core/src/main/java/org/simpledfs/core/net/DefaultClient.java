@@ -31,21 +31,10 @@ public class DefaultClient implements Client {
         this.serverInfo = serverInfo;
     }
 
-    @Override
-    public void start() {
-        EventLoopGroup group = new NioEventLoopGroup();
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(group)
-                .channel(NioSocketChannel.class)
-                .handler(new LoggingHandler(LogLevel.INFO))
-                .handler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast(channelInitializer);
-                    }
-                });
 
+    @Override
+    public void startAsync() {
+        Bootstrap bootstrap = connect();
         ChannelFuture future = bootstrap.connect(serverInfo.getAddress(), serverInfo.getPort());
         future.addListener(new GenericFutureListener<Future<? super Void>>() {
             @Override
@@ -59,15 +48,49 @@ public class DefaultClient implements Client {
                     LOGGER.info("[{}] Has connected to {} successfully", DefaultClient.class.getSimpleName(), serverInfo);
                 } else {
                     LOGGER.warn("[{}] Connect to {} failed, cause={}", DefaultClient.class.getSimpleName(), serverInfo, f.cause().getMessage());
-//                     fire the channelInactive and make sure
-//                     the {@link HealthyChecker} will reconnect
+                    /*
+                     * fire the channelInactive and make sure
+                     * the {@link HealthyChecker} will reconnect
+                     */
                     channel.pipeline().fireChannelInactive();
                 }
             }
         });
     }
 
+    @Override
+    public void start() {
+        Bootstrap bootstrap = connect();
+        try {
+            ChannelFuture future = bootstrap.connect(serverInfo.getAddress(), serverInfo.getPort()).sync();
+            channel = future.channel();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            LOGGER.warn("[{}] Connect to {} failed, cause={}", DefaultClient.class.getSimpleName(), serverInfo, e.getMessage());
 
+        }
+
+    }
+
+    private Bootstrap connect(){
+        EventLoopGroup group = new NioEventLoopGroup();
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.group(group)
+                .channel(NioSocketChannel.class)
+                .handler(new LoggingHandler(LogLevel.INFO))
+                .handler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel ch) throws Exception {
+                        ChannelPipeline pipeline = ch.pipeline();
+                        pipeline.addLast(channelInitializer);
+                    }
+                });
+        return bootstrap;
+    }
+
+    public Object getStartMonitor() {
+        return startMonitor;
+    }
 
     @Override
     public void send(Packet packet) {

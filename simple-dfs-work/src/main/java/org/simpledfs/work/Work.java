@@ -34,7 +34,16 @@ public class Work {
 
     public void start() {
         this.client.start();
+        Object clientMonitor = ((DefaultClient)this.client).getStartMonitor();
+        try {
+            synchronized (clientMonitor){
+                clientMonitor.wait();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.server.start();
+
     }
 
     public void init(){
