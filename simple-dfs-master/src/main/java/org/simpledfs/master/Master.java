@@ -50,6 +50,7 @@ public class Master {
         root.setName("/");
         DirectoryLock.getInstance().addLock(root.getName());
         this.context = new MasterContext(root, config);
+        this.workManager = WorkManager.getInstance();
         //init network connect
         MasterServerInitializer initializer = new MasterServerInitializer(context);
         int port = config.getInt("master.port", 8080);

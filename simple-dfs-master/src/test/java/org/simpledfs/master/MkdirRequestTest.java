@@ -23,12 +23,12 @@ public class MkdirRequestTest {
         IDirectory root = buildDirectory();
         DirectoryLock.getInstance().addLock(root.getName());
         ctx = null;
-        context = new MasterContext(root);
-        requestId = 1L;
-        MkdirRequest request = new MkdirRequest();
-        request.setName("a");
-        MkdirRequestProcessor processor = new MkdirRequestProcessor(ctx, request, context, requestId);
-        processor.process();
+//        context = new MasterContext(root);
+//        requestId = 1L;
+//        MkdirRequest request = new MkdirRequest();
+//        request.setName("a");
+//        MkdirRequestProcessor processor = new MkdirRequestProcessor(ctx, request, context, requestId);
+//        processor.process();
     }
 
     private IDirectory buildDirectory(){

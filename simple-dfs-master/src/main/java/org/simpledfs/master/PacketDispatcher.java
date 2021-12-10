@@ -48,4 +48,8 @@ public class PacketDispatcher extends ByteToMessageDecoder {
         // 将channelActive事件传递到PacketHandler
         ctx.fireChannelActive();
     }
+
+    private void dispatchToHeartPacket(ChannelHandlerContext ctx){
+
+    }
 }
