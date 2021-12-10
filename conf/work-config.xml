@@ -6,7 +6,7 @@
     </property>
     <property>
         <name>health.checker</name>
-        <value>30</value>
+        <value>10</value>
     </property>
     <property>
         <name>idle.state</name>

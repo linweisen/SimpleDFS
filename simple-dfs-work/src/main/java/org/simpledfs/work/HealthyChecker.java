@@ -35,9 +35,10 @@ public class HealthyChecker extends ChannelInboundHandlerAdapter {
         ctx.executor().schedule(() -> {
             Channel channel = ctx.channel();
             if (channel.isActive()) {
-                Packet pingPacket = new Packet();
-                channel.writeAndFlush(pingPacket);
-                LOGGER.info("[{}] Send a Ping={}", HealthyChecker.class.getSimpleName(), pingPacket);
+                Packet packet = new Packet();
+                packet.setType((byte)0x00);
+                channel.writeAndFlush(packet);
+                LOGGER.info("[{}] Send a Ping={}", HealthyChecker.class.getSimpleName(), packet);
                 schedulePing(ctx);
             }
         }, pingInterval, TimeUnit.SECONDS);
@@ -47,7 +48,11 @@ public class HealthyChecker extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         ctx.executor().schedule(() -> {
             LOGGER.info("[{}] Try to reconnecting...", HealthyChecker.class.getSimpleName());
-            client.start();
+            if (client.isConnectAsync()){
+                client.startAsync();
+            }else{
+                client.start();
+            }
         }, 5, TimeUnit.SECONDS);
         ctx.fireChannelInactive();
     }

@@ -22,9 +22,8 @@ public class Master {
 
     private Server server;
 
-    private Configuration config;
-
-    private IDirectory root;
+    //manager work node info
+    private WorkManager workManager;
 
     private MasterContext context;
 
@@ -35,25 +34,25 @@ public class Master {
             LOGGER.error("configuration parse filed");
             System.exit(0);
         }
-        this.config = new Configuration(properties);
-        init();
+        Configuration config = new Configuration(properties);
+        init(config);
     }
 
     public void start(){
         this.server.start();
     }
 
-    public void init(){
+    public void init(Configuration config){
         LOGGER.info("start init...");
         shutdownHook();
         //init root directory
-        root = new Directory();
+        IDirectory root = new Directory();
         root.setName("/");
         DirectoryLock.getInstance().addLock(root.getName());
-        this.context = new MasterContext(root);
+        this.context = new MasterContext(root, config);
         //init network connect
         MasterServerInitializer initializer = new MasterServerInitializer(context);
-        int port = this.config.getInt("master.port", 8080);
+        int port = config.getInt("master.port", 8080);
         this.server = new DefaultServer(Master.class, initializer, port);
 
     }

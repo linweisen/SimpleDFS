@@ -33,7 +33,7 @@ public class Work {
     }
 
     public void start() {
-        this.client.start();
+        this.client.startAsync();
         Object clientMonitor = ((DefaultClient)this.client).getStartMonitor();
         try {
             synchronized (clientMonitor){
@@ -58,7 +58,7 @@ public class Work {
         }
         String[] masterInfoArray = masterInfo.split(":");
         ServerInfo serverInfo = new ServerInfo(masterInfoArray[0], Integer.valueOf(masterInfoArray[1]));
-        this.client = new DefaultClient(serverInfo);
+        this.client = new DefaultClient(serverInfo, true);
         WorkClientInitializer clientInitializer = new WorkClientInitializer(this.client, this.config);
         this.client.setInitializer(clientInitializer);
 

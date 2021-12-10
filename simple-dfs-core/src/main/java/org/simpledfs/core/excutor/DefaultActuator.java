@@ -3,7 +3,6 @@ package org.simpledfs.core.excutor;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import org.simpledfs.core.context.Context;
-import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.req.Request;
 
 import java.util.concurrent.*;

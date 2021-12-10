@@ -13,4 +13,6 @@ public interface Client {
     public void send(Packet packet);
 
     public void setInitializer(ChannelInitializer<SocketChannel> channelInitializer);
+
+    public boolean isConnectAsync();
 }

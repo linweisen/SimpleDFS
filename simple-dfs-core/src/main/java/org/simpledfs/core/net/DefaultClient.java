@@ -25,10 +25,16 @@ public class DefaultClient implements Client {
 
     private boolean connected = false;
 
-    private Object startMonitor = new Object();
+    private Object connectMonitor = new Object();
 
-    public DefaultClient(ServerInfo serverInfo) {
+    private EventLoopGroup group;
+
+    private volatile int retry = 0;
+
+    private boolean connectAsync;
+    public DefaultClient(ServerInfo serverInfo, boolean connectAsync) {
         this.serverInfo = serverInfo;
+        this.connectAsync = connectAsync;
     }
 
 
@@ -42,8 +48,8 @@ public class DefaultClient implements Client {
                 channel = future.channel();
                 if (f.isSuccess()) {
                     connected = true;
-                    synchronized (startMonitor){
-                        startMonitor.notify();
+                    synchronized (connectMonitor){
+                        connectMonitor.notify();
                     }
                     LOGGER.info("[{}] Has connected to {} successfully", DefaultClient.class.getSimpleName(), serverInfo);
                 } else {
@@ -52,7 +58,19 @@ public class DefaultClient implements Client {
                      * fire the channelInactive and make sure
                      * the {@link HealthyChecker} will reconnect
                      */
-                    channel.pipeline().fireChannelInactive();
+                    if (retry < 1){
+                        channel.pipeline().fireChannelInactive();
+                    }else{
+                        channel.closeFuture().addListener(new ChannelFutureListener() {
+                            @Override
+                            public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                                group.shutdownGracefully().addListener( f -> {
+                                    System.exit(0);
+                                });
+                            }
+                        });
+                    }
+                    retry += 1;
                 }
             }
         });
@@ -69,11 +87,10 @@ public class DefaultClient implements Client {
             LOGGER.warn("[{}] Connect to {} failed, cause={}", DefaultClient.class.getSimpleName(), serverInfo, e.getMessage());
 
         }
-
     }
 
     private Bootstrap connect(){
-        EventLoopGroup group = new NioEventLoopGroup();
+        this.group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(group)
                 .channel(NioSocketChannel.class)
@@ -89,7 +106,7 @@ public class DefaultClient implements Client {
     }
 
     public Object getStartMonitor() {
-        return startMonitor;
+        return connectMonitor;
     }
 
     @Override
@@ -100,6 +117,11 @@ public class DefaultClient implements Client {
     @Override
     public void setInitializer(ChannelInitializer<SocketChannel> channelInitializer) {
         this.channelInitializer = channelInitializer;
+    }
+
+    @Override
+    public boolean isConnectAsync() {
+        return connectAsync;
     }
 
     public ChannelInitializer<SocketChannel> getChannelInitializer() {
