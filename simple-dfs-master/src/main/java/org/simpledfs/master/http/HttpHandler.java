@@ -6,7 +6,6 @@ import io.netty.handler.codec.http.*;
 import org.simpledfs.master.DefaultMasterPacketHandler;
 import org.simpledfs.master.MasterContext;
 import org.simpledfs.master.http.controller.HttpRequestHandler;
-import org.simpledfs.master.http.controller.RequestHandlerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,21 +22,18 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
         this.handlerFactory = RequestHandlerFactory.getInstance();
     }
 
-
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Object msg) {
         if (msg instanceof FullHttpRequest) {
             FullHttpRequest request = (FullHttpRequest) msg;
             HttpRequestHandler handler = handlerFactory.getHandler(request.getUri());
 
-            HttpResponse response = handler.handle(request);
+            HttpResponse response = handler.handle(request, context);
             writeResponse(ctx, response);
             LOGGER.info("frame={}", msg);
         }else{
 
         }
-
-
     }
 
     @Override

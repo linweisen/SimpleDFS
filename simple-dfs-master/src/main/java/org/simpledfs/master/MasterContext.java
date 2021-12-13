@@ -34,6 +34,10 @@ public class MasterContext implements Context {
         this.root = root;
     }
 
+    public Map<String, WorkInfo> getWorkInfoMap() {
+        return workInfoMap;
+    }
+
     public static class BuildContext{
 
         private MasterContext masterContext = new MasterContext();

@@ -1,8 +1,8 @@
-package org.simpledfs.master.http.controller;
+package org.simpledfs.master.http;
 
 import org.simpledfs.core.utils.ClassUtils;
+import org.simpledfs.master.http.controller.HttpRequestHandler;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -17,6 +17,9 @@ public class RequestHandlerFactory {
         try {
             Set<Class<?>> classSet = ClassUtils.getClasses(packageName);
             for (Class clazz : classSet){
+                if (clazz.getSuperclass() == null){
+                    continue;
+                }
                 if (clazz.getSuperclass().getSimpleName().equals("AbstractHttpRequestHandler")){
                     HttpRequestHandler handler = (HttpRequestHandler)clazz.newInstance();
                     handlerMap.put(handler.getUri(), handler);
