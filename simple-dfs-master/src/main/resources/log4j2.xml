@@ -51,7 +51,7 @@
 
         <!-- error日志格式 -->
         <!--配置多个Rollingfile地址，还需要在root下添加appender-ref ref="asyncErrorLog"/> 只显示error级别的信息 -->
-        <RollingFile name="errorLog" fileName="${LOG_HOME}error/error.log"
+        <RollingFile name="errorLog" fileName="${LOG_HOME}/error/error.log"
                      filePattern="${LOG_HOME}/error/error.log.%d{yyyy-MM-dd}.log.gz">
             <!-- 日志打印格式-->
             <PatternLayout pattern="%d{DEFAULT} | %c{10} | %p | [%t] | %m%n"/>

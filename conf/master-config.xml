@@ -4,4 +4,8 @@
         <name>master.port</name>
         <value>8080</value>
     </property>
+    <property>
+        <name>idle.time</name>
+        <value>60</value>
+    </property>
 </configuration>

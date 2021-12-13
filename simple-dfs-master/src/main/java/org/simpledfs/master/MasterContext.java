@@ -38,6 +38,10 @@ public class MasterContext implements Context {
         return workInfoMap;
     }
 
+    public Configuration getConfig() {
+        return config;
+    }
+
     public static class BuildContext{
 
         private MasterContext masterContext = new MasterContext();
