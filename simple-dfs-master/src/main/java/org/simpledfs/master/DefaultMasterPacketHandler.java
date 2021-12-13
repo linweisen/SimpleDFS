@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.simpledfs.core.excutor.Actuator;
 import org.simpledfs.core.excutor.DefaultActuator;
+import org.simpledfs.core.packet.DefaultPacketHandler;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.req.Request;
 import org.simpledfs.core.utils.RequestResponseUtils;
@@ -15,12 +16,12 @@ public class DefaultMasterPacketHandler extends SimpleChannelInboundHandler<Pack
 
     private final static Logger LOGGER = LoggerFactory.getLogger(DefaultMasterPacketHandler.class);
 
-    private Actuator<Packet> actuator;
+    private Actuator actuator;
 
     private MasterContext context;
 
     public DefaultMasterPacketHandler(MasterContext context) {
-        this.actuator = new DefaultActuator<>();
+        this.actuator = DefaultActuator.getInstance();
         this.context = context;
     }
 
@@ -45,8 +46,8 @@ public class DefaultMasterPacketHandler extends SimpleChannelInboundHandler<Pack
         actuator.execute(ctx, request, context, packet.getId());
     }
 
-
     private void onResponse(Packet packet) {
         System.out.println(packet);
     }
+
 }

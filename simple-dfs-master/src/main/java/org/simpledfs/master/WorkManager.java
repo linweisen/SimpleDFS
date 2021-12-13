@@ -9,9 +9,6 @@ public class WorkManager {
     private WorkManager() {
     }
 
-
-
-
     public static WorkManager getInstance() {
         return WorkManagerHolder.workManager;
     }

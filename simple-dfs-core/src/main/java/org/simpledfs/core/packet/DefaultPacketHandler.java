@@ -17,7 +17,7 @@ public class DefaultPacketHandler extends SimpleChannelInboundHandler<Packet> {
     private Actuator<Packet> actuator;
 
     public DefaultPacketHandler() {
-        actuator = new DefaultActuator<>();
+//        actuator = new DefaultActuator<>();
     }
 
     @Override

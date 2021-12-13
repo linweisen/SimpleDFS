@@ -45,12 +45,19 @@ public class Master {
     public void init(Configuration config){
         LOGGER.info("start init...");
         shutdownHook();
+
         //init root directory
         IDirectory root = new Directory();
         root.setName("/");
         DirectoryLock.getInstance().addLock(root.getName());
-        this.context = new MasterContext(root, config);
+
+        //build master context
+        this.context = new MasterContext.BuildContext()
+                                        .root(root)
+                                        .config(config)
+                                        .build();
         this.workManager = WorkManager.getInstance();
+
         //init network connect
         MasterServerInitializer initializer = new MasterServerInitializer(context);
         int port = config.getInt("master.port", 8080);

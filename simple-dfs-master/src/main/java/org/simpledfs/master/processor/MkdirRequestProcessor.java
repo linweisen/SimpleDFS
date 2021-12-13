@@ -8,13 +8,11 @@ import org.simpledfs.core.dir.DirectoryLock;
 import org.simpledfs.core.dir.IDirectory;
 import org.simpledfs.core.excutor.AbstractRequestProcessor;
 import org.simpledfs.core.packet.Packet;
-import org.simpledfs.core.req.MkdirResponse;
 import org.simpledfs.core.req.Request;
 import org.simpledfs.master.MasterContext;
 import org.simpledfs.master.req.MkdirRequest;
+import org.simpledfs.master.req.MkdirResponse;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.locks.Lock;
 
 public class MkdirRequestProcessor extends AbstractRequestProcessor {
