@@ -72,7 +72,7 @@ public class PacketDispatcher extends ByteToMessageDecoder {
         pipeline.addLast(new ChunkedWriteHandler());
         // aggregate HttpRequest/HttpContent/LastHttpContent to FullHttpRequest
         pipeline.addLast(new HttpObjectAggregator(8096));
-        pipeline.addLast(new HttpHandler());
+        pipeline.addLast(new HttpHandler(context));
         pipeline.remove(this);
         // 将channelActive事件传递到HttpHandler
         ctx.fireChannelActive();

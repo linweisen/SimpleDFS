@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import org.simpledfs.master.DefaultMasterPacketHandler;
+import org.simpledfs.master.MasterContext;
 import org.simpledfs.master.http.controller.HttpRequestHandler;
 import org.simpledfs.master.http.controller.RequestHandlerFactory;
 import org.slf4j.Logger;
@@ -15,7 +16,10 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
 
     private RequestHandlerFactory handlerFactory;
 
-    public HttpHandler() {
+    private MasterContext context;
+
+    public HttpHandler(MasterContext context) {
+        this.context = context;
         this.handlerFactory = RequestHandlerFactory.getInstance();
     }
 

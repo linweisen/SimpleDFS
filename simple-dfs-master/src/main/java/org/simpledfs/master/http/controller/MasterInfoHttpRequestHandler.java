@@ -11,6 +11,7 @@ public class MasterInfoHttpRequestHandler extends AbstractHttpRequestHandler {
 
     @Override
     public HttpResponse handle(FullHttpRequest request) {
+
         return null;
     }
 }

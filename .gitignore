@@ -5,7 +5,6 @@ target
 .settings
 *.log
 *.log.*
-bin
 log
 
 ##############################
