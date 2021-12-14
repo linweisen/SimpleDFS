@@ -8,12 +8,21 @@ import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
 import org.simpledfs.core.net.*;
+import org.simpledfs.core.uuid.DefaultUUIDGenerator;
+import org.simpledfs.core.uuid.UUIDGenerator;
 import org.simpledfs.master.WorkInfo;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
 
+/**
+ * work节点
+ *
+ * @author linweisen
+ * @date 2021/12/14
+ * @version 1.0
+ **/
 public class Work {
 
     private static Logger LOGGER = LogManager.getLogger(Work.class);
@@ -25,6 +34,9 @@ public class Work {
     private Configuration config;
 
     private NodeInfoSelfUpdater updater;
+
+    //todo change to snowflake algorithm
+    private UUIDGenerator uuidGenerator = new DefaultUUIDGenerator();
 
     public Work(Command command) {
         String masterConfigFile = command.getFile();
@@ -62,11 +74,7 @@ public class Work {
         this.updater = new NodeInfoSelfUpdater(config.getString(WorkConfigurationKey.WORK_NAME), 6000);
 
         //init master link client
-        String masterInfo = this.config.getString("master.address");
-        if (masterInfo == null){
-            LOGGER.error("");
-            System.exit(0);
-        }
+        String masterInfo = this.config.getString(WorkConfigurationKey.MASTER_ADDRESS);
         String[] masterInfoArray = masterInfo.split(":");
         ServerInfo serverInfo = new ServerInfo(masterInfoArray[0], Integer.valueOf(masterInfoArray[1]));
         this.client = new DefaultClient(serverInfo, true);
@@ -74,7 +82,7 @@ public class Work {
         this.client.setInitializer(clientInitializer);
 
         //init work server...
-        int port = this.config.getInt("master.port", 8080);
+        int port = this.config.getInt(WorkConfigurationKey.WORK_PORT, 8080);
         this.server = new DefaultServer(Work.class, new WorkServerInitializer(), port);
     }
 
@@ -89,12 +97,15 @@ public class Work {
     }
 
     private boolean checkProperties(Properties properties){
-        if (!properties.contains("master.address")){
+        if (!properties.contains(WorkConfigurationKey.MASTER_ADDRESS)){
             LOGGER.error("work configuration must contains property<master.address>...");
             return false;
         }
-        if (!properties.contains("work.name")){
-
+        if (!properties.contains(WorkConfigurationKey.WORK_ID)){
+            properties.setProperty(WorkConfigurationKey.WORK_ID, uuidGenerator.getUID());
+        }
+        if (!properties.contains(WorkConfigurationKey.WORK_NAME)){
+            properties.setProperty(WorkConfigurationKey.WORK_NAME, "work-" + properties.getProperty(WorkConfigurationKey.WORK_ID));
         }
         return true;
     }

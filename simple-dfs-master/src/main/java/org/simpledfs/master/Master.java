@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
-import org.simpledfs.core.context.Context;
 import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.dir.Directory;
 import org.simpledfs.core.dir.DirectoryLock;
@@ -23,7 +22,6 @@ public class Master {
 
     private Server server;
 
-    //manager work node info
     private WorkManager workManager;
 
     private MasterContext context;
