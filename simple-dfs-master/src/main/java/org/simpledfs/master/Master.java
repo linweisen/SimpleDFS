@@ -8,6 +8,7 @@ import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
 import org.simpledfs.core.context.Context;
+import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.dir.Directory;
 import org.simpledfs.core.dir.DirectoryLock;
 import org.simpledfs.core.dir.IDirectory;
@@ -26,6 +27,8 @@ public class Master {
     private WorkManager workManager;
 
     private MasterContext context;
+
+    private MetaContext meta;
 
     public Master(Command command) {
         String masterConfigFile = command.getFile();

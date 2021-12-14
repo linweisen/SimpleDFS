@@ -12,6 +12,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ *
+ *
+ * @author linweisen
+ * @date 2021/12/14
+ * @version 1.0
+ **/
 public class PacketDispatcher extends ByteToMessageDecoder {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(PacketDispatcher.class);

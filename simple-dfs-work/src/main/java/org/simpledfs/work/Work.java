@@ -24,6 +24,8 @@ public class Work {
 
     private Configuration config;
 
+    private NodeInfoSelfUpdater nodeInfoSelfUpdater;
+
     public Work(Command command) {
         String masterConfigFile = command.getFile();
         Properties properties = ConfigurationParser.read(masterConfigFile);
@@ -50,8 +52,9 @@ public class Work {
     }
 
     public void init(){
-        LOGGER.info("start init...");
+        LOGGER.info("{} work node start init...", config.getString(""));
         shutdownHook();
+
 
 
         //init master link client
