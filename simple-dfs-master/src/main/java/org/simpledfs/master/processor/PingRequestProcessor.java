@@ -29,7 +29,7 @@ public class PingRequestProcessor extends AbstractRequestProcessor {
         packet.setResponse(pingResponse);
         writeResponse(ctx, packet);
     }
-
+    //
     private boolean checkWorkInfo(WorkInfo workInfo){
         return true;
     }
