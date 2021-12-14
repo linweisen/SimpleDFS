@@ -20,7 +20,7 @@ public class MasterContext implements Context {
     }
 
     public void addWork(WorkInfo workInfo){
-        if (workInfo == null){
+        if (workInfoMap == null){
             workInfoMap = new HashMap<>();
         }
         workInfoMap.put(workInfo.getId(), workInfo);

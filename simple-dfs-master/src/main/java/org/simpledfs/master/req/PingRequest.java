@@ -6,7 +6,7 @@ import org.simpledfs.core.excutor.Processor;
 import org.simpledfs.core.req.AbstractRequest;
 import org.simpledfs.core.req.Request;
 import org.simpledfs.master.WorkInfo;
-import org.simpledfs.master.processor.MkdirRequestProcessor;
+import org.simpledfs.master.processor.PingRequestProcessor;
 
 public class PingRequest extends AbstractRequest {
 
@@ -18,7 +18,7 @@ public class PingRequest extends AbstractRequest {
 
     @Override
     public Processor buildSelfProcessor(ChannelHandlerContext ctx, Request request, Context context, Long packetId){
-        MkdirRequestProcessor processor = new MkdirRequestProcessor(ctx, request, context, packetId);
+        PingRequestProcessor processor = new PingRequestProcessor(ctx, request, context, packetId);
         return processor;
     }
 

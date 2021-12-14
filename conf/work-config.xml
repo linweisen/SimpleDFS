@@ -20,4 +20,12 @@
         <name>storage.path</name>
         <value>/s/s/</value>
     </property>
+    <property>
+        <name>work.name</name>
+        <value>work1</value>
+    </property>
+    <property>
+        <name>work.id</name>
+        <value>1</value>
+    </property>
 </configuration>

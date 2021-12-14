@@ -12,11 +12,21 @@ public class WorkInfo {
 
     private long lastAcceptTime;
 
+    private int cpus;
+
     private long men;
 
     private long disk;
 
     private long storageFileSize;
+
+    public int getCpus() {
+        return cpus;
+    }
+
+    public void setCpus(int cpus) {
+        this.cpus = cpus;
+    }
 
     public String getId() {
         return id;

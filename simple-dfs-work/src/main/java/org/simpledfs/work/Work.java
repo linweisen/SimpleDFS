@@ -8,7 +8,10 @@ import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
 import org.simpledfs.core.net.*;
+import org.simpledfs.master.WorkInfo;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 public class Work {
@@ -50,6 +53,7 @@ public class Work {
         LOGGER.info("start init...");
         shutdownHook();
 
+
         //init master link client
         String masterInfo = this.config.getString("master.address");
         if (masterInfo == null){
@@ -65,6 +69,8 @@ public class Work {
         //init work server...
         int port = this.config.getInt("master.port", 8080);
         this.server = new DefaultServer(Work.class, new WorkServerInitializer(), port);
+
+
     }
 
     public void shutdownHook(){

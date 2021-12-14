@@ -8,6 +8,7 @@ import org.simpledfs.core.req.Request;
 import org.simpledfs.master.MasterContext;
 import org.simpledfs.master.WorkInfo;
 import org.simpledfs.master.req.PingRequest;
+import org.simpledfs.master.req.PingResponse;
 
 public class PingRequestProcessor extends AbstractRequestProcessor {
 
@@ -24,7 +25,9 @@ public class PingRequestProcessor extends AbstractRequestProcessor {
             masterContext.addWork(workInfo);
         }
         Packet packet = buildResponsePacket();
-
+        PingResponse pingResponse = new PingResponse();
+        packet.setResponse(pingResponse);
+        writeResponse(ctx, packet);
     }
 
     private boolean checkWorkInfo(WorkInfo workInfo){

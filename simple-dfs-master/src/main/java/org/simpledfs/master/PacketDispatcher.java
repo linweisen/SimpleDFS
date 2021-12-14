@@ -85,16 +85,15 @@ public class PacketDispatcher extends ByteToMessageDecoder {
     }
 
     private static boolean isHttp(byte magic, byte type) {
-        return
-                magic == 'G' && type == 'E' || // GET
-                        magic == 'P' && type == 'O' || // POST
-                        magic == 'P' && type == 'U' || // PUT
-                        magic == 'H' && type == 'E' || // HEAD
-                        magic == 'O' && type == 'P' || // OPTIONS
-                        magic == 'P' && type == 'A' || // PATCH
-                        magic == 'D' && type == 'E' || // DELETE
-                        magic == 'T' && type == 'R' || // TRACE
-                        magic == 'C' && type == 'O';   // CONNECT
+        return magic == 'G' && type == 'E' || // GET
+                    magic == 'P' && type == 'O' || // POST
+                    magic == 'P' && type == 'U' || // PUT
+                    magic == 'H' && type == 'E' || // HEAD
+                    magic == 'O' && type == 'P' || // OPTIONS
+                    magic == 'P' && type == 'A' || // PATCH
+                    magic == 'D' && type == 'E' || // DELETE
+                    magic == 'T' && type == 'R' || // TRACE
+                    magic == 'C' && type == 'O';   // CONNECT
     }
 
     private boolean isPacket(byte magic) {

@@ -20,7 +20,7 @@ public class MasterInfoHttpRequestHandler extends AbstractHttpRequestHandler {
         if (workInfoMap == null){
             return buildResponse("no work node", RenderType.TEXT);
         }else{
-            return buildResponse(workInfoMap, RenderType.JSON);
+            return buildResponse(workInfoMap, RenderType.TEXT);
         }
 
     }
