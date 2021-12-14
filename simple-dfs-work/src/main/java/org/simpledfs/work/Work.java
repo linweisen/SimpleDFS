@@ -24,17 +24,20 @@ public class Work {
 
     private Configuration config;
 
-    private NodeInfoSelfUpdater nodeInfoSelfUpdater;
+    private NodeInfoSelfUpdater updater;
 
     public Work(Command command) {
         String masterConfigFile = command.getFile();
         Properties properties = ConfigurationParser.read(masterConfigFile);
         if (properties == null){
-            LOGGER.error("configuration parse filed");
+            LOGGER.error("configuration of the work node parse filed, work will exit...");
             System.exit(0);
         }
-        this.config = new Configuration(properties);
-        init();
+        if (checkProperties(properties)){
+            this.config = new Configuration(properties);
+            init();
+        }
+
     }
 
     public void start() {
@@ -55,7 +58,8 @@ public class Work {
         LOGGER.info("{} work node start init...", config.getString(""));
         shutdownHook();
 
-
+        //init work info updater
+        this.updater = new NodeInfoSelfUpdater(config.getString(WorkConfigurationKey.WORK_NAME), 6000);
 
         //init master link client
         String masterInfo = this.config.getString("master.address");
@@ -72,8 +76,6 @@ public class Work {
         //init work server...
         int port = this.config.getInt("master.port", 8080);
         this.server = new DefaultServer(Work.class, new WorkServerInitializer(), port);
-
-
     }
 
     public void shutdownHook(){
@@ -84,6 +86,17 @@ public class Work {
         }, "shutdownHook-thread");
         t.setDaemon(true);
         Runtime.getRuntime().addShutdownHook(t);
+    }
+
+    private boolean checkProperties(Properties properties){
+        if (!properties.contains("master.address")){
+            LOGGER.error("work configuration must contains property<master.address>...");
+            return false;
+        }
+        if (!properties.contains("work.name")){
+
+        }
+        return true;
     }
     
 
