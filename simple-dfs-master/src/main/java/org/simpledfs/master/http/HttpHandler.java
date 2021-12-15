@@ -3,8 +3,8 @@ package org.simpledfs.master.http;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
+import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.master.DefaultMasterPacketHandler;
-import org.simpledfs.master.MasterContext;
 import org.simpledfs.master.http.controller.HttpRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +15,10 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
 
     private RequestHandlerFactory handlerFactory;
 
-    private MasterContext context;
+    private MetaContext meta;
 
-    public HttpHandler(MasterContext context) {
-        this.context = context;
+    public HttpHandler(MetaContext meta) {
+        this.meta = meta;
         this.handlerFactory = RequestHandlerFactory.getInstance();
     }
 
@@ -28,7 +28,7 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
             FullHttpRequest request = (FullHttpRequest) msg;
             HttpRequestHandler handler = handlerFactory.getHandler(request.getUri());
 
-            HttpResponse response = handler.handle(request, context);
+            HttpResponse response = handler.handle(request, meta);
             writeResponse(ctx, response);
             LOGGER.info("frame={}", msg);
         }else{

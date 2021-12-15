@@ -7,6 +7,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.net.IdleStateChecker;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.packet.PacketMessageCodec;
@@ -20,10 +21,10 @@ public class PacketDispatcher extends ByteToMessageDecoder {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(PacketDispatcher.class);
 
-    private MasterContext context;
+    private MetaContext meta;
 
-    public PacketDispatcher(MasterContext context) {
-        this.context = context;
+    public PacketDispatcher(MetaContext meta) {
+        this.meta = meta;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class PacketDispatcher extends ByteToMessageDecoder {
     private void dispatchToPacket(ChannelHandlerContext ctx) {
         ChannelPipeline pipeline = ctx.pipeline();
         pipeline.addLast(new PacketMessageCodec());
-        pipeline.addLast(new DefaultMasterPacketHandler(context));
+        pipeline.addLast(new DefaultMasterPacketHandler(meta));
         // 将所有所需的ChannelHandler添加到pipeline之后，一定要将自身移除掉
         // 否则该Channel之后的请求仍会重新执行协议的分发，而这是要避免的
         pipeline.remove(this);
@@ -62,9 +63,9 @@ public class PacketDispatcher extends ByteToMessageDecoder {
 
     private void dispatchToHeartPacket(ChannelHandlerContext ctx){
         ChannelPipeline pipeline = ctx.pipeline();
-        pipeline.addLast(new IdleStateChecker(context.getConfig().getInt("idle.time", 60)));
+        pipeline.addLast(new IdleStateChecker(meta.getConfig().getInt("idle.time", 60)));
         pipeline.addLast(new PacketMessageCodec());
-        pipeline.addLast(new DefaultMasterPacketHandler(context));
+        pipeline.addLast(new DefaultMasterPacketHandler(meta));
         // 将所有所需的ChannelHandler添加到pipeline之后，一定要将自身移除掉
         // 否则该Channel之后的请求仍会重新执行协议的分发，而这是要避免的
         pipeline.remove(this);
@@ -78,7 +79,7 @@ public class PacketDispatcher extends ByteToMessageDecoder {
         pipeline.addLast(new ChunkedWriteHandler());
         // aggregate HttpRequest/HttpContent/LastHttpContent to FullHttpRequest
         pipeline.addLast(new HttpObjectAggregator(8096));
-        pipeline.addLast(new HttpHandler(context));
+        pipeline.addLast(new HttpHandler(meta));
         pipeline.remove(this);
         // 将channelActive事件传递到HttpHandler
         ctx.fireChannelActive();

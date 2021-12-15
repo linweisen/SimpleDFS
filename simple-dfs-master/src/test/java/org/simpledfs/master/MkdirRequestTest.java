@@ -2,6 +2,7 @@ package org.simpledfs.master;
 
 import io.netty.channel.ChannelHandlerContext;
 import org.junit.Test;
+import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.dir.Directory;
 import org.simpledfs.core.dir.DirectoryLock;
 import org.simpledfs.core.dir.IDirectory;
@@ -14,7 +15,7 @@ public class MkdirRequestTest {
 
     private MkdirRequest request;
 
-    private MasterContext context;
+    private MetaContext context;
 
     private long requestId;
 

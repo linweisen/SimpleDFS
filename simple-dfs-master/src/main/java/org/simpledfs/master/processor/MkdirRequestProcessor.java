@@ -4,12 +4,12 @@ import io.netty.channel.ChannelHandlerContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.context.Context;
+import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.dir.DirectoryLock;
 import org.simpledfs.core.dir.IDirectory;
 import org.simpledfs.core.excutor.AbstractRequestProcessor;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.req.Request;
-import org.simpledfs.master.MasterContext;
 import org.simpledfs.master.req.MkdirRequest;
 import org.simpledfs.master.req.MkdirResponse;
 
@@ -37,7 +37,7 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
 
         String topParent = getTopParent(directoryLevel);
         Lock writeLock = DirectoryLock.getInstance().getLock(topParent).writeLock();
-        IDirectory root = ((MasterContext)this.context).getRoot();
+        IDirectory root = ((MetaContext)this.context).getRoot();
         try {
             writeLock.lock();
             IDirectory newDir = null;

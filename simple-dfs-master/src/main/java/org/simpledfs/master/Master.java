@@ -16,15 +16,18 @@ import org.simpledfs.core.net.Server;
 
 import java.util.Properties;
 
+/**
+ * Master节点
+ *
+ * @author linweisen
+ * @date 2021/12/14
+ * @version 1.0
+ **/
 public class Master {
 
     private static Logger LOGGER = LogManager.getLogger(Master.class);
 
     private Server server;
-
-    private WorkManager workManager;
-
-    private MasterContext context;
 
     private MetaContext meta;
 
@@ -35,8 +38,12 @@ public class Master {
             LOGGER.error("configuration parse filed");
             System.exit(0);
         }
-        Configuration config = new Configuration(properties);
-        init(config);
+        if (checkProperties(properties)){
+            Configuration config = new Configuration(properties);
+            init(config);
+        }else{
+            System.exit(0);
+        }
     }
 
     public void start(){
@@ -53,14 +60,13 @@ public class Master {
         DirectoryLock.getInstance().addLock(root.getName());
 
         //build master context
-        this.context = new MasterContext.BuildContext()
+        this.meta = new MetaContext.BuildContext()
                                         .root(root)
                                         .config(config)
                                         .build();
-        this.workManager = WorkManager.getInstance();
 
         //init network connect
-        MasterServerInitializer initializer = new MasterServerInitializer(context);
+        MasterServerInitializer initializer = new MasterServerInitializer(this.meta);
         int port = config.getInt("master.port", 8080);
         this.server = new DefaultServer(Master.class, initializer, port);
 
@@ -74,6 +80,17 @@ public class Master {
         }, "shutdownHook-thread");
         t.setDaemon(true);
         Runtime.getRuntime().addShutdownHook(t);
+    }
+
+    private boolean checkProperties(Properties properties){
+        if (!properties.contains(MasterConfigurationKey.MASTER_PORT)){
+            LOGGER.error("master configuration must contains property<master.port>...");
+            return false;
+        }
+        if (!properties.contains(MasterConfigurationKey.IDLE_TIME)){
+            properties.setProperty(MasterConfigurationKey.IDLE_TIME, "60000");
+        }
+        return true;
     }
 
     public static void main(String[] args) {

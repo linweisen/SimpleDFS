@@ -3,18 +3,19 @@ package org.simpledfs.master;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import org.simpledfs.core.context.MetaContext;
 
 public class MasterServerInitializer extends ChannelInitializer<SocketChannel> {
 
-    private MasterContext context;
+    private MetaContext meta;
 
-    public MasterServerInitializer(MasterContext context) {
-        this.context = context;
+    public MasterServerInitializer(MetaContext meta) {
+        this.meta = meta;
     }
 
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline pipeline = channel.pipeline();
-        pipeline.addLast(new PacketDispatcher(context));
+        pipeline.addLast(new PacketDispatcher(meta));
     }
 }

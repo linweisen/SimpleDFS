@@ -2,10 +2,10 @@ package org.simpledfs.master.processor;
 
 import io.netty.channel.ChannelHandlerContext;
 import org.simpledfs.core.context.Context;
+import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.excutor.AbstractRequestProcessor;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.req.Request;
-import org.simpledfs.master.MasterContext;
 import org.simpledfs.master.WorkInfo;
 import org.simpledfs.master.req.PingRequest;
 import org.simpledfs.master.req.PingResponse;
@@ -20,10 +20,10 @@ public class PingRequestProcessor extends AbstractRequestProcessor {
     public void process() {
         PingRequest pingRequest = (PingRequest) request;
         WorkInfo workInfo = pingRequest.getWorkInfo();
-        MasterContext masterContext = (MasterContext) context;
-        if (checkWorkInfo(workInfo)){
-            masterContext.addWork(workInfo);
-        }
+        MetaContext meta = (MetaContext) context;
+//        if (checkWorkInfo(workInfo)){
+//            meta.addWork(workInfo);
+//        }
         Packet packet = buildResponsePacket();
         PingResponse pingResponse = new PingResponse();
         packet.setResponse(pingResponse);

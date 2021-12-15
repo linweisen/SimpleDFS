@@ -2,6 +2,7 @@ package org.simpledfs.master;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.excutor.Actuator;
 import org.simpledfs.core.excutor.DefaultActuator;
 import org.simpledfs.core.packet.DefaultPacketHandler;
@@ -18,11 +19,11 @@ public class DefaultMasterPacketHandler extends SimpleChannelInboundHandler<Pack
 
     private Actuator actuator;
 
-    private MasterContext context;
+    private MetaContext meta;
 
-    public DefaultMasterPacketHandler(MasterContext context) {
+    public DefaultMasterPacketHandler(MetaContext meta) {
         this.actuator = DefaultActuator.getInstance();
-        this.context = context;
+        this.meta = meta;
     }
 
     @Override
@@ -43,7 +44,7 @@ public class DefaultMasterPacketHandler extends SimpleChannelInboundHandler<Pack
 
     private void onRequest(ChannelHandlerContext ctx, Packet packet) {
         Request request = packet.getRequest();
-        actuator.execute(ctx, request, context, packet.getId());
+        actuator.execute(ctx, request, meta, packet.getId());
     }
 
     private void onResponse(Packet packet) {
