@@ -10,10 +10,7 @@ import org.simpledfs.core.config.ConfigurationParser;
 import org.simpledfs.core.net.*;
 import org.simpledfs.core.uuid.DefaultUUIDGenerator;
 import org.simpledfs.core.uuid.UUIDGenerator;
-import org.simpledfs.master.WorkInfo;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Properties;
 
 /**

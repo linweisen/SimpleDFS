@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.net.Client;
 import org.simpledfs.core.packet.Packet;
-import org.simpledfs.master.WorkInfo;
 import org.simpledfs.master.req.PingRequest;
 
 import java.net.InetAddress;

@@ -19,7 +19,7 @@ public class MetaContext implements Context{
 
     }
 
-    public void addWork(NodeInfo nodeInfo){
+    public void addNode(NodeInfo nodeInfo){
         if (nodeMap == null){
             nodeMap = new HashMap<>();
         }

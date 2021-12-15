@@ -83,7 +83,7 @@ public class Master {
     }
 
     private boolean checkProperties(Properties properties){
-        if (!properties.contains(MasterConfigurationKey.MASTER_PORT)){
+        if (!properties.containsKey(MasterConfigurationKey.MASTER_PORT)){
             LOGGER.error("master configuration must contains property<master.port>...");
             return false;
         }

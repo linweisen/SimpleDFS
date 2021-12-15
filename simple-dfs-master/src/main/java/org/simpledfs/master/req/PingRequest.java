@@ -3,14 +3,14 @@ package org.simpledfs.master.req;
 import io.netty.channel.ChannelHandlerContext;
 import org.simpledfs.core.context.Context;
 import org.simpledfs.core.excutor.Processor;
+import org.simpledfs.core.node.NodeInfo;
 import org.simpledfs.core.req.AbstractRequest;
 import org.simpledfs.core.req.Request;
-import org.simpledfs.master.WorkInfo;
 import org.simpledfs.master.processor.PingRequestProcessor;
 
 public class PingRequest extends AbstractRequest {
 
-    private WorkInfo workInfo;
+    private NodeInfo nodeInfo;
 
     public PingRequest() {
         super((byte)0x00);
@@ -22,11 +22,11 @@ public class PingRequest extends AbstractRequest {
         return processor;
     }
 
-    public WorkInfo getWorkInfo() {
-        return workInfo;
+    public NodeInfo getNodeInfo() {
+        return nodeInfo;
     }
 
-    public void setWorkInfo(WorkInfo workInfo) {
-        this.workInfo = workInfo;
+    public void setNodeInfo(NodeInfo nodeInfo) {
+        this.nodeInfo = nodeInfo;
     }
 }
