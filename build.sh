@@ -10,5 +10,5 @@ else
   mkdir ./build
 fi
 
-cp ./simple-dfs-master/target/simple-dfs-master.jar ./build
+cp ./simple-dfs-master/target/simple-dfs-master-jar-with-dependencies.jar ./build
 cp ./simple-dfs-work/target/simple-dfs-work.jar ./build
