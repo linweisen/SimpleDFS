@@ -6,6 +6,7 @@ import org.simpledfs.core.dir.*;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.serialize.KryoSerializer;
 import org.simpledfs.core.serialize.Serializer;
+import org.simpledfs.core.utils.MD5Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,8 @@ public class SnapshotTest {
         iNode.setSize(0);
         iNode.setUpdateTime(System.currentTimeMillis());
         root.setINode(iNode);
+        root.setParentId("-1");
+        root.setId(MD5Utils.getMD5String(root.getName()));
 
         IDirectory user = new Directory("/user");
         INode userNode = new INode();
@@ -41,7 +44,8 @@ public class SnapshotTest {
         userNode.setSize(0);
         userNode.setUpdateTime(System.currentTimeMillis());
         user.setINode(userNode);
-
+        user.setParentId(root.getId());
+        user.setId(MD5Utils.getMD5String(user.getName()));
         root.addChildDirectory(user);
         serializer = KryoSerializer.getInstance();
 

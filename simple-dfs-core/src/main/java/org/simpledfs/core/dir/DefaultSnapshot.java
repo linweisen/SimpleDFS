@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author linweisen
@@ -81,6 +83,7 @@ public class DefaultSnapshot implements Snapshot {
 
     @Override
     public IDirectory read() {
+        Map<String, IDirectory> cache = new HashMap<>();
         long index;
         byte isDirectory;
         byte isDeleted;
@@ -93,11 +96,21 @@ public class DefaultSnapshot implements Snapshot {
                 size = directoryFile.readInt();
                 byte[] b = new byte[size];
                 int i = directoryFile.read(b);
-                IDirectory root = serializer.deserialize(b, IDirectory.class);
-                System.out.println(root);
-                //todo 需要判断index + size是否超过文件末尾
-                index = directoryFile.readLong();
+                IDirectory d = serializer.deserialize(b, IDirectory.class);
+                SnapshotHeader header = new SnapshotHeader();
+                header.setIndex(index);
+                header.setSize(size);
+                header.setIsDeleted(isDeleted);
+                header.setIsDirectory(isDirectory);
+                d.setHeader(header);
+                cache.put(d.getId(), d);
+                if ((directoryFile.getFilePointer() + 64) < directoryFile.length()){
+                    index = directoryFile.readLong();
+                }else{
+                    break;
+                }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
