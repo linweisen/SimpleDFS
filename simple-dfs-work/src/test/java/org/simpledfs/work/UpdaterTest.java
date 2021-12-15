@@ -7,7 +7,7 @@ public class UpdaterTest {
     @Test
     public void test() throws InterruptedException {
 
-        NodeInfoSelfUpdater updater = new NodeInfoSelfUpdater("node1", 2000);
+        NodeInfoSelfUpdater updater = new NodeInfoSelfUpdater("id", "node1", 2000);
         updater.start();
 
         int counter = 0;

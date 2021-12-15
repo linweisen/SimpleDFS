@@ -24,7 +24,7 @@ public class NodeInfoSelfUpdater {
 
     private Thread t;
 
-    public NodeInfoSelfUpdater(String name, int interval) {
+    public NodeInfoSelfUpdater(String id, String name, int interval) {
         nodeInfo = new NodeInfo();
         List<SystemInfo> systemInfoList = new ArrayList<>();
         systemInfoList.add(new MemInfo());
@@ -32,6 +32,7 @@ public class NodeInfoSelfUpdater {
         systemInfoList.add(new DiskInfo());
         nodeInfo.setSystemInfoList(systemInfoList);
         nodeInfo.setName(name);
+        nodeInfo.setId(id);
         try {
             nodeInfo.setAddress(InetAddress.getLocalHost().getHostAddress());
         } catch (UnknownHostException e) {

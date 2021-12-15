@@ -1,10 +1,11 @@
 package org.simpledfs.core.node;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Properties;
 
-public class DiskInfo implements SystemInfo {
+public class DiskInfo implements SystemInfo, Serializable {
 
     private SystemType systemType;
 
@@ -13,6 +14,30 @@ public class DiskInfo implements SystemInfo {
     private long idleSpace;
 
     private long usedSpace;
+
+    public long getDiskSpace() {
+        return diskSpace;
+    }
+
+    public void setDiskSpace(long diskSpace) {
+        this.diskSpace = diskSpace;
+    }
+
+    public long getIdleSpace() {
+        return idleSpace;
+    }
+
+    public void setIdleSpace(long idleSpace) {
+        this.idleSpace = idleSpace;
+    }
+
+    public long getUsedSpace() {
+        return usedSpace;
+    }
+
+    public void setUsedSpace(long usedSpace) {
+        this.usedSpace = usedSpace;
+    }
 
     private DecimalFormat df = new DecimalFormat("0.00");
 

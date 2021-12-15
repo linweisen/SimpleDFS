@@ -69,7 +69,8 @@ public class Work {
         shutdownHook();
 
         //init work info updater
-        this.updater = new NodeInfoSelfUpdater(config.getString(WorkConfigurationKey.WORK_NAME), 6000);
+        this.updater = new NodeInfoSelfUpdater(config.getString(WorkConfigurationKey.WORK_ID),
+                config.getString(WorkConfigurationKey.WORK_NAME), 6000);
 
         //init master link client
         String masterInfo = this.config.getString(WorkConfigurationKey.MASTER_ADDRESS);
@@ -95,14 +96,14 @@ public class Work {
     }
 
     private boolean checkProperties(Properties properties){
-        if (!properties.contains(WorkConfigurationKey.MASTER_ADDRESS)){
+        if (!properties.containsKey(WorkConfigurationKey.MASTER_ADDRESS)){
             LOGGER.error("work configuration must contains property<master.address>...");
             return false;
         }
-        if (!properties.contains(WorkConfigurationKey.WORK_ID)){
+        if (!properties.containsKey(WorkConfigurationKey.WORK_ID)){
             properties.setProperty(WorkConfigurationKey.WORK_ID, uuidGenerator.getUID());
         }
-        if (!properties.contains(WorkConfigurationKey.WORK_NAME)){
+        if (!properties.containsKey(WorkConfigurationKey.WORK_NAME)){
             properties.setProperty(WorkConfigurationKey.WORK_NAME, "work-" + properties.getProperty(WorkConfigurationKey.WORK_ID));
         }
         return true;

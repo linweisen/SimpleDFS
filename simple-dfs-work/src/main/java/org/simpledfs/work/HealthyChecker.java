@@ -41,6 +41,7 @@ public class HealthyChecker extends ChannelInboundHandlerAdapter {
             Channel channel = ctx.channel();
             if (channel.isActive()) {
                 Packet packet = buildPingPacket();
+                channel.writeAndFlush(packet);
                 LOGGER.info("[{}] Send a Ping={}", HealthyChecker.class.getSimpleName(), packet);
                 schedulePing(ctx);
             }

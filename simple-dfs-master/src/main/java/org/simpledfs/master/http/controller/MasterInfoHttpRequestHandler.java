@@ -5,6 +5,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import org.simpledfs.core.context.Context;
 import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.node.NodeInfo;
+import org.simpledfs.core.utils.JacksonTool;
 import org.simpledfs.master.http.RenderType;
 
 import java.util.Map;
@@ -20,9 +21,10 @@ public class MasterInfoHttpRequestHandler extends AbstractHttpRequestHandler {
         MetaContext meta = (MetaContext) context;
         Map<String, NodeInfo> nodeMap = meta.getNodeMap();
         if (nodeMap == null){
-            return buildResponse("no work node", RenderType.TEXT);
+            return buildResponse("no work node", RenderType.JSON);
         }else{
-            return buildResponse(nodeMap, RenderType.TEXT);
+
+            return buildResponse(JacksonTool.toJson(nodeMap), RenderType.JSON);
         }
 
     }

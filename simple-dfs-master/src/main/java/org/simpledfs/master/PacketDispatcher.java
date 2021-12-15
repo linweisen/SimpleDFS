@@ -63,7 +63,7 @@ public class PacketDispatcher extends ByteToMessageDecoder {
 
     private void dispatchToHeartPacket(ChannelHandlerContext ctx){
         ChannelPipeline pipeline = ctx.pipeline();
-        pipeline.addLast(new IdleStateChecker(meta.getConfig().getInt("idle.time", 60)));
+        pipeline.addLast(new IdleStateChecker(meta.getConfig().getInt(MasterConfigurationKey.IDLE_TIME, 60)));
         pipeline.addLast(new PacketMessageCodec());
         pipeline.addLast(new DefaultMasterPacketHandler(meta));
         // 将所有所需的ChannelHandler添加到pipeline之后，一定要将自身移除掉

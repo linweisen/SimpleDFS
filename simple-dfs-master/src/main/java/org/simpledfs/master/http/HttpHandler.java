@@ -26,11 +26,16 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
     public void channelRead0(ChannelHandlerContext ctx, Object msg) {
         if (msg instanceof FullHttpRequest) {
             FullHttpRequest request = (FullHttpRequest) msg;
-            HttpRequestHandler handler = handlerFactory.getHandler(request.getUri());
-
-            HttpResponse response = handler.handle(request, meta);
-            writeResponse(ctx, response);
-            LOGGER.info("frame={}", msg);
+            if (request.getUri().equals("/favicon.ico")){
+                HttpResponse response = HttpRenderUtil.render("ico", RenderType.TEXT);
+                writeResponse(ctx, response);
+                LOGGER.info("frame={}", msg);
+            }else{
+                HttpRequestHandler handler = handlerFactory.getHandler(request.getUri());
+                HttpResponse response = handler.handle(request, meta);
+                writeResponse(ctx, response);
+                LOGGER.info("frame={}", msg);
+            }
         }else{
 
         }

@@ -1,8 +1,18 @@
 package org.simpledfs.core.node;
 
-public class CpusInfo implements SystemInfo {
+import java.io.Serializable;
+
+public class CpusInfo implements SystemInfo, Serializable {
 
     private int cpus;
+
+    public int getCpus() {
+        return cpus;
+    }
+
+    public void setCpus(int cpus) {
+        this.cpus = cpus;
+    }
 
     @Override
     public void obtain() {
