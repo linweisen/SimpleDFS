@@ -61,15 +61,16 @@ public class DefaultSnapshot implements Snapshot {
         byte[] b = directory.serialize(serializer);
         header = new SnapshotHeader();
         header.setSize(b.length);
-        header.setIsDirectory((byte)(directory.isDirectory() ? 0 : 1));
+        header.setIsDirectory((byte)(directory.isDirectory() ? 1 : 0));
         try {
             long last = directoryFile.length();
             directoryFile.seek(last);
             header.setIndex(last);
             directoryFile.writeLong(header.getIndex());
-            directoryFile.writeByte(header.getIsDeleted());
+            directoryFile.writeByte(header.getIsDirectory());
             directoryFile.writeByte(header.getIsDeleted());
             directoryFile.writeInt(header.getSize());
+            directoryFile.write(b);
             directory.setHeader(header);
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,16 +81,22 @@ public class DefaultSnapshot implements Snapshot {
 
     @Override
     public IDirectory read() {
+        long index;
+        byte isDirectory;
+        byte isDeleted;
+        int size;
         try {
-            long index = directoryFile.readLong();
-            byte isDirectory = directoryFile.readByte();
-            byte isDeleted = directoryFile.readByte();
-            int size = directoryFile.readInt();
-            byte[] b = new byte[size];
-            int i = directoryFile.read(b);
-            if (i != -1){
+            index = directoryFile.readLong();
+            while (index < directoryFile.length()){
+                isDirectory = directoryFile.readByte();
+                isDeleted = directoryFile.readByte();
+                size = directoryFile.readInt();
+                byte[] b = new byte[size];
+                int i = directoryFile.read(b);
                 IDirectory root = serializer.deserialize(b, IDirectory.class);
                 System.out.println(root);
+                //todo 需要判断index + size是否超过文件末尾
+                index = directoryFile.readLong();
             }
         } catch (IOException e) {
             e.printStackTrace();
