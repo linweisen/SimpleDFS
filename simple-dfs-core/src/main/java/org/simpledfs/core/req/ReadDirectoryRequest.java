@@ -1,11 +1,9 @@
-package org.simpledfs.master.req;
+package org.simpledfs.core.req;
 
 import io.netty.channel.ChannelHandlerContext;
 import org.simpledfs.core.context.Context;
+import org.simpledfs.core.excutor.MkdirRequestProcessor;
 import org.simpledfs.core.excutor.Processor;
-import org.simpledfs.core.req.AbstractRequest;
-import org.simpledfs.core.req.Request;
-import org.simpledfs.master.processor.MkdirRequestProcessor;
 
 public class ReadDirectoryRequest extends AbstractRequest {
 

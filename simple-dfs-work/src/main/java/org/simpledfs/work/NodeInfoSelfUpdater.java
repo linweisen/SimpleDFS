@@ -36,8 +36,8 @@ public class NodeInfoSelfUpdater {
             nodeInfo.setAddress(InetAddress.getLocalHost().getHostAddress());
         } catch (UnknownHostException e) {
             nodeInfo.setAddress("127.0.0.1");
-            e.printStackTrace();
             LOGGER.error("{} get localhost wrong...", name);
+            e.printStackTrace();
         }
         t = new Thread(new Updater(nodeInfo, interval));
         t.setDaemon(true);

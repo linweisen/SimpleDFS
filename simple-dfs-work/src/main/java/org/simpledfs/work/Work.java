@@ -50,6 +50,7 @@ public class Work {
     }
 
     public void start() {
+        this.updater.start();
         this.client.startAsync();
         Object clientMonitor = ((DefaultClient)this.client).getStartMonitor();
         try {
@@ -75,7 +76,7 @@ public class Work {
         String[] masterInfoArray = masterInfo.split(":");
         ServerInfo serverInfo = new ServerInfo(masterInfoArray[0], Integer.valueOf(masterInfoArray[1]));
         this.client = new DefaultClient(serverInfo, true);
-        WorkClientInitializer clientInitializer = new WorkClientInitializer(this.client, this.config);
+        WorkClientInitializer clientInitializer = new WorkClientInitializer(this.updater.getNodeInfo(), this.client, this.config);
         this.client.setInitializer(clientInitializer);
 
         //init work server...

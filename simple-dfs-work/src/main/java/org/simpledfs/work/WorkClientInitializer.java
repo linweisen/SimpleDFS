@@ -6,6 +6,7 @@ import io.netty.channel.socket.SocketChannel;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.net.Client;
 import org.simpledfs.core.net.IdleStateChecker;
+import org.simpledfs.core.node.NodeInfo;
 import org.simpledfs.core.packet.PacketMessageCodec;
 
 
@@ -15,7 +16,11 @@ public class WorkClientInitializer extends ChannelInitializer<SocketChannel> {
 
     private Configuration config;
 
-    public WorkClientInitializer(Client client, Configuration config) {
+    private NodeInfo nodeInfo;
+
+    public WorkClientInitializer(NodeInfo nodeInfo,
+                                 Client client, Configuration config) {
+        this.nodeInfo = nodeInfo;
         this.client = client;
         this.config = config;
     }
@@ -23,9 +28,9 @@ public class WorkClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         ChannelPipeline pipeline = channel.pipeline();
-        pipeline.addLast(new IdleStateChecker(config.getInt("idle.state", 60)));
+        pipeline.addLast(new IdleStateChecker(config.getInt(WorkConfigurationKey.IDLE_STATE, 60)));
         pipeline.addLast(new PacketMessageCodec());
-        pipeline.addLast(new HealthyChecker(client, config.getInt("health.checker", 30)));
+        pipeline.addLast(new HealthyChecker(nodeInfo, client, config.getInt(WorkConfigurationKey.HEALTH_CHECKER, 30)));
         pipeline.addLast(new WorkClientHandler());
     }
 

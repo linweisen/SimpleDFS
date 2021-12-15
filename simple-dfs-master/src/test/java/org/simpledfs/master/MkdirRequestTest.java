@@ -6,8 +6,7 @@ import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.dir.Directory;
 import org.simpledfs.core.dir.DirectoryLock;
 import org.simpledfs.core.dir.IDirectory;
-import org.simpledfs.master.processor.MkdirRequestProcessor;
-import org.simpledfs.master.req.MkdirRequest;
+import org.simpledfs.core.req.MkdirRequest;
 
 public class MkdirRequestTest {
 

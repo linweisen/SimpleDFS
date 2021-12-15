@@ -1,6 +1,4 @@
-package org.simpledfs.master.req;
-
-import org.simpledfs.core.req.AbstractResponse;
+package org.simpledfs.core.req;
 
 public class ReadDirectoryResponse extends AbstractResponse {
 

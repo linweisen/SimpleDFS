@@ -1,14 +1,13 @@
-package org.simpledfs.master.processor;
+package org.simpledfs.core.excutor;
 
 import io.netty.channel.ChannelHandlerContext;
 import org.simpledfs.core.context.Context;
 import org.simpledfs.core.context.MetaContext;
-import org.simpledfs.core.excutor.AbstractRequestProcessor;
 import org.simpledfs.core.node.NodeInfo;
 import org.simpledfs.core.packet.Packet;
+import org.simpledfs.core.req.PingRequest;
+import org.simpledfs.core.req.PingResponse;
 import org.simpledfs.core.req.Request;
-import org.simpledfs.master.req.PingRequest;
-import org.simpledfs.master.req.PingResponse;
 
 public class PingRequestProcessor extends AbstractRequestProcessor {
 

@@ -23,10 +23,5 @@
             <artifactId>simple-dfs-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.simpledfs</groupId>
-            <artifactId>simple-dfs-master</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 </project>

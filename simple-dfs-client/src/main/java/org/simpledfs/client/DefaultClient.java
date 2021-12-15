@@ -9,8 +9,7 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.packet.PendingPackets;
-import org.simpledfs.core.req.ClientFileSendRequest;
-import org.simpledfs.master.req.MkdirRequest;
+import org.simpledfs.core.req.MkdirRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

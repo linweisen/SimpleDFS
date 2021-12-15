@@ -6,11 +6,10 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.net.Client;
+import org.simpledfs.core.node.NodeInfo;
 import org.simpledfs.core.packet.Packet;
-import org.simpledfs.master.req.PingRequest;
+import org.simpledfs.core.req.PingRequest;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
 public class HealthyChecker extends ChannelInboundHandlerAdapter {
@@ -23,7 +22,10 @@ public class HealthyChecker extends ChannelInboundHandlerAdapter {
 
     private int pingInterval;
 
-    public HealthyChecker(Client client, int pingInterval) {
+    private NodeInfo nodeInfo;
+
+    public HealthyChecker(NodeInfo nodeinfo, Client client, int pingInterval) {
+        this.nodeInfo = nodeinfo;
         this.client = client;
         this.pingInterval = pingInterval <= 0 ? DEFAULT_PING_INTERVAL : pingInterval;
     }
@@ -38,27 +40,7 @@ public class HealthyChecker extends ChannelInboundHandlerAdapter {
         ctx.executor().schedule(() -> {
             Channel channel = ctx.channel();
             if (channel.isActive()) {
-                Packet packet = new Packet();
-                packet.setId(1L);
-                packet.setType((byte)0x00);
-                PingRequest pingRequest = new PingRequest();
-                WorkInfo workInfo = new WorkInfo();
-                InetAddress addr;
-                try {
-                    addr = InetAddress.getLocalHost();
-                    workInfo.setAddress(addr.getHostAddress());
-                } catch (UnknownHostException e) {
-                    workInfo.setAddress("127.0.0.1");
-                    e.printStackTrace();
-                }
-                int cpus = Runtime.getRuntime().availableProcessors();
-                workInfo.setCpus(cpus);
-                workInfo.setId("1L");
-                long heapSize = Runtime.getRuntime().totalMemory();
-                workInfo.setMen(heapSize);
-                pingRequest.setWorkInfo(workInfo);
-                packet.setRequest(pingRequest);
-                channel.writeAndFlush(packet);
+                Packet packet = buildPingPacket();
                 LOGGER.info("[{}] Send a Ping={}", HealthyChecker.class.getSimpleName(), packet);
                 schedulePing(ctx);
             }
@@ -78,4 +60,13 @@ public class HealthyChecker extends ChannelInboundHandlerAdapter {
         ctx.fireChannelInactive();
     }
 
+    private Packet buildPingPacket(){
+        Packet packet = new Packet();
+        packet.setId(GlobalRequestCounter.count());
+        packet.setType((byte)0x00);
+        PingRequest pingRequest = new PingRequest();
+        pingRequest.setNodeInfo(nodeInfo);
+        packet.setRequest(pingRequest);
+        return packet;
+    }
 }

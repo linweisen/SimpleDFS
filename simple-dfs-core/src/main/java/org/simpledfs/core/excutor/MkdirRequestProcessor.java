@@ -1,4 +1,4 @@
-package org.simpledfs.master.processor;
+package org.simpledfs.core.excutor;
 
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.logging.log4j.LogManager;
@@ -7,11 +7,11 @@ import org.simpledfs.core.context.Context;
 import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.dir.DirectoryLock;
 import org.simpledfs.core.dir.IDirectory;
-import org.simpledfs.core.excutor.AbstractRequestProcessor;
 import org.simpledfs.core.packet.Packet;
+import org.simpledfs.core.req.MkdirRequest;
+import org.simpledfs.core.req.MkdirResponse;
 import org.simpledfs.core.req.Request;
-import org.simpledfs.master.req.MkdirRequest;
-import org.simpledfs.master.req.MkdirResponse;
+
 
 import java.util.concurrent.locks.Lock;
 
