@@ -1,0 +1,55 @@
+package org.simpledfs.core.dir;
+
+/**
+ * @author linweisen
+ * @version 1.0
+ * @description
+ * @date 2021/12/15
+ **/
+public class SnapshotHeader {
+
+    private int index;
+
+    //1 is deleted
+    private byte isDeleted = 0;
+
+    /*
+     * 0 is directory
+     * 1 is file
+     */
+    private byte isDirectory;
+
+    private int size;
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public byte getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(byte isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public byte getIsDirectory() {
+        return isDirectory;
+    }
+
+    public void setIsDirectory(byte isDirectory) {
+        this.isDirectory = isDirectory;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+}

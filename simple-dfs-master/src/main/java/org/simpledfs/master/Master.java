@@ -55,8 +55,7 @@ public class Master {
         shutdownHook();
 
         //init root directory
-        IDirectory root = new Directory();
-        root.setName("/");
+        IDirectory root = new Directory("/");
         DirectoryLock.getInstance().addLock(root.getName());
 
         //build master context

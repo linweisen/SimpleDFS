@@ -1,7 +1,7 @@
 Simple Distributed File System
 ==========================
 Simple Distributed File System是使用Java语言实现的，类似于Apache Hadoop HDFS的分布式文件系统，整体架构是如下所示。
-![Snowflake](introduce_image/simpledfs_architect.jpg) 
+![architecture](introduce_image/simpledfs_architecture.jpg) 
 
 ### Master节点
 Master是SDFS的主节点，存储整个文件系统的结构目录，以及各个存储文件的分块元数据信息

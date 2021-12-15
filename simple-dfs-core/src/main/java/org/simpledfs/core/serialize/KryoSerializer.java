@@ -12,23 +12,17 @@ import java.io.IOException;
 public class KryoSerializer implements Serializer {
 
     private KryoSerializer() {
-
     }
 
     private static class SingletonHolder {
-
         private static KryoSerializer serializer = new KryoSerializer();
-
     }
     public static KryoSerializer getInstance() {
-
         return SingletonHolder.serializer;
     }
 
-
     @Override
     public byte[] serialize(Object object) {
-//        Assert.notNull(object, "the serialize object can not be null");
         byte[] bytes = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Kryo kryo = PoolHolder.kryoPool.obtain();
@@ -55,7 +49,6 @@ public class KryoSerializer implements Serializer {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> clazz) {
-//        Assert.notNull(bytes, "the deserialize bytes can not be null");
         T object = null;
         ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
         Kryo kryo = PoolHolder.kryoPool.obtain();
@@ -64,6 +57,7 @@ public class KryoSerializer implements Serializer {
             input.setBuffer(bytes);
             object = (T) kryo.readClassAndObject(input);
         } catch (Exception e) {
+            e.printStackTrace();
 //            log.warn("KryoSerializer [deserialize] error, cause:{}", e.getMessage(), e);
         } finally {
             try {

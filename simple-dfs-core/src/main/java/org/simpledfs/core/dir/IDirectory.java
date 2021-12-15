@@ -1,8 +1,13 @@
 package org.simpledfs.core.dir;
 
+import org.simpledfs.core.serialize.Serializer;
+
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class IDirectory {
+public abstract class IDirectory implements Serializable {
+
+    private SnapshotHeader header;
 
     public static String SEPARATOR = "/";
 
@@ -10,11 +15,32 @@ public abstract class IDirectory {
 
     private INode iNode;
 
+    public IDirectory() {
+    }
+
+    public IDirectory(String name) {
+        this.name = name;
+    }
+
+    public SnapshotHeader getHeader() {
+        return header;
+    }
+
+    public void setHeader(SnapshotHeader header) {
+        this.header = header;
+    }
+
     public abstract boolean isDirectory();
+
+    public byte[] serialize(Serializer serializer){
+        return serializer.serialize(this);
+    }
 
     public List<IDirectory> getChildren(){
         return null;
     }
+
+    public abstract void addChildDirectory(IDirectory directory);
 
     public IDirectory findDirectory(String name){
         return null;
@@ -39,4 +65,5 @@ public abstract class IDirectory {
     public void setINode(INode iNode) {
         this.iNode = iNode;
     }
+
 }

@@ -5,7 +5,14 @@ import java.util.List;
 
 public class Directory extends IDirectory {
 
-    private List<IDirectory> childrenList;
+    private transient List<IDirectory> childrenList;
+
+    public Directory() {
+    }
+
+    public Directory(String name) {
+        super(name);
+    }
 
     @Override
     public boolean isDirectory() {
@@ -15,6 +22,14 @@ public class Directory extends IDirectory {
     @Override
     public List<IDirectory> getChildren() {
         return childrenList;
+    }
+
+    @Override
+    public void addChildDirectory(IDirectory directory) {
+        if (childrenList == null){
+            childrenList = new ArrayList<>();
+        }
+        childrenList.add(directory);
     }
 
     @Override
@@ -35,7 +50,7 @@ public class Directory extends IDirectory {
         if (childrenList == null){
             childrenList = new ArrayList<>();
         }
-        IDirectory directory = new Directory();
+        IDirectory directory = new Directory("/");
         directory.setName(name);
         childrenList.add(directory);
         return directory;
