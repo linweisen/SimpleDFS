@@ -2,10 +2,7 @@ package com.simpledfs.core;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.simpledfs.core.dir.Directory;
-import org.simpledfs.core.dir.File;
-import org.simpledfs.core.dir.IDirectory;
-import org.simpledfs.core.dir.INode;
+import org.simpledfs.core.dir.*;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.serialize.KryoSerializer;
 import org.simpledfs.core.serialize.Serializer;
@@ -24,6 +21,8 @@ public class SnapshotTest {
     private IDirectory root;
 
     private Serializer serializer;
+
+    private String storagePath = "/tmp/test";
 
     @Before
     public void before(){
@@ -54,5 +53,19 @@ public class SnapshotTest {
 
         IDirectory tmp = serializer.deserialize(b, IDirectory.class);
         System.out.println(tmp);
+    }
+
+    @Test
+    public void storage(){
+        Snapshot defaultSnapshot = new DefaultSnapshot(storagePath);
+        defaultSnapshot.write(root);
+        defaultSnapshot.write(root.getChildren().get(0));
+    }
+
+    @Test
+    public void read(){
+        Snapshot defaultSnapshot = new DefaultSnapshot(storagePath);
+        defaultSnapshot.read();
+
     }
 }

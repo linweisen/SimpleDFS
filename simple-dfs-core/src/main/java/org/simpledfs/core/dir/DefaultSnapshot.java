@@ -50,7 +50,7 @@ public class DefaultSnapshot implements Snapshot {
     public void write(IDirectory directory) {
         SnapshotHeader header = directory.getHeader();
         if (header != null){
-            int index = header.getIndex();
+            long index = header.getIndex();
             try {
                 directoryFile.seek(index + 4);
                 directoryFile.writeByte(1);
@@ -62,13 +62,38 @@ public class DefaultSnapshot implements Snapshot {
         header = new SnapshotHeader();
         header.setSize(b.length);
         header.setIsDirectory((byte)(directory.isDirectory() ? 0 : 1));
-
+        try {
+            long last = directoryFile.length();
+            directoryFile.seek(last);
+            header.setIndex(last);
+            directoryFile.writeLong(header.getIndex());
+            directoryFile.writeByte(header.getIsDeleted());
+            directoryFile.writeByte(header.getIsDeleted());
+            directoryFile.writeInt(header.getSize());
+            directory.setHeader(header);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
 
     @Override
     public IDirectory read() {
+        try {
+            long index = directoryFile.readLong();
+            byte isDirectory = directoryFile.readByte();
+            byte isDeleted = directoryFile.readByte();
+            int size = directoryFile.readInt();
+            byte[] b = new byte[size];
+            int i = directoryFile.read(b);
+            if (i != -1){
+                IDirectory root = serializer.deserialize(b, IDirectory.class);
+                System.out.println(root);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

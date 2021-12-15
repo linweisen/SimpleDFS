@@ -8,7 +8,7 @@ package org.simpledfs.core.dir;
  **/
 public class SnapshotHeader {
 
-    private int index;
+    private long index;
 
     //1 is deleted
     private byte isDeleted = 0;
@@ -21,11 +21,11 @@ public class SnapshotHeader {
 
     private int size;
 
-    public int getIndex() {
+    public long getIndex() {
         return index;
     }
 
-    public void setIndex(int index) {
+    public void setIndex(long index) {
         this.index = index;
     }
 
