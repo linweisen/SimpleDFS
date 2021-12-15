@@ -100,8 +100,6 @@ public class DefaultClient implements Client {
         packet.setSerialize((byte)1);
         MkdirRequest request = new MkdirRequest();
         request.setName("test");
-//        request.setSegment(1);
-//        request.setFileName("测试文件");
         packet.setRequest(request);
         while (!client.connected){
             Thread.sleep(1000);
