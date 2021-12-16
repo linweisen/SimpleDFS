@@ -8,4 +8,8 @@
         <name>idle.time</name>
         <value>60</value>
     </property>
+    <property>
+        <name>storage.path</name>
+        <value>/tmp/simpledfs/master</value>
+    </property>
 </configuration>

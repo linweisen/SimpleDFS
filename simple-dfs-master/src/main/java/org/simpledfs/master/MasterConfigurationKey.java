@@ -12,4 +12,6 @@ public class MasterConfigurationKey {
 
     public static String IDLE_TIME = "idle.time";
 
+    public static String STORAGE_PATH = "storage.path";
+
 }

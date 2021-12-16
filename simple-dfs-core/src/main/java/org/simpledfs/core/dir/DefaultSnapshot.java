@@ -7,9 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -128,5 +126,17 @@ public class DefaultSnapshot implements Snapshot {
             e.printStackTrace();
         }
         return root;
+    }
+
+    @Override
+    public boolean isEmptySnapshot() {
+        try {
+            if (directoryFile.length() == 0){
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

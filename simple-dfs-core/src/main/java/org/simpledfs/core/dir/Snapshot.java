@@ -8,7 +8,9 @@ package org.simpledfs.core.dir;
  **/
 public interface Snapshot {
 
-    public void write(IDirectory directory);
+    void write(IDirectory directory);
 
-    public IDirectory read();
+    IDirectory read();
+
+    boolean isEmptySnapshot();
 }

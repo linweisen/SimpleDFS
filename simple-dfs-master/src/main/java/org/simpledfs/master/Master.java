@@ -8,12 +8,11 @@ import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
 import org.simpledfs.core.context.MetaContext;
-import org.simpledfs.core.dir.Directory;
-import org.simpledfs.core.dir.DirectoryLock;
-import org.simpledfs.core.dir.IDirectory;
+import org.simpledfs.core.dir.*;
 import org.simpledfs.core.net.DefaultServer;
 import org.simpledfs.core.net.Server;
 
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -31,42 +30,70 @@ public class Master {
 
     private MetaContext meta;
 
+    private Snapshot snapshot;
+
     public Master(Command command) {
         String masterConfigFile = command.getFile();
         Properties properties = ConfigurationParser.read(masterConfigFile);
         if (properties == null){
-            LOGGER.error("configuration parse filed");
+            LOGGER.error("master configuration parse failed...");
             System.exit(0);
         }
         if (checkProperties(properties)){
             Configuration config = new Configuration(properties);
             init(config);
         }else{
+            LOGGER.error("configuration check failed, master node will exit...");
             System.exit(0);
         }
     }
+
 
     public void start(){
         this.server.start();
     }
 
+    /**
+     * 初始化master节点:
+     * 1、构建目录树
+     * 2、构建元数据context
+     * 3、构建netty server
+     *
+     * @Author: linweisen
+     * @Date: 2021/12/16
+     * @Version: 1.0
+    **/
     public void init(Configuration config){
         LOGGER.info("start init...");
         shutdownHook();
 
-        //init root directory
-        IDirectory root = new Directory("/");
-        DirectoryLock.getInstance().addLock(root.getName());
+        /*
+         * 判断镜像文件是否为空,之后为每个root下的子目录生成读写锁
+         * 1、为空则初始化root directory
+         * 2、不为空则从镜像文件中初始化整个directory tree
+         */
+        this.snapshot = new DefaultSnapshot(config.getString(MasterConfigurationKey.STORAGE_PATH));
+        IDirectory root = null;
+        if (snapshot.isEmptySnapshot()){
+            root = snapshot.read();
+            List<IDirectory> children = root.getChildren();
+            if (children != null){
+                for (IDirectory d : children){
+                    DirectoryLock.getInstance().addLock(d.getName());
+                }
+            }
+        }else{
+            root = new Directory("/");
+            DirectoryLock.getInstance().addLock(root.getName());
+        }
 
-        //build master context
         this.meta = new MetaContext.BuildContext()
                                         .root(root)
                                         .config(config)
                                         .build();
 
-        //init network connect
         MasterServerInitializer initializer = new MasterServerInitializer(this.meta);
-        int port = config.getInt("master.port", 8080);
+        int port = config.getInt(MasterConfigurationKey.MASTER_PORT, 8080);
         this.server = new DefaultServer(Master.class, initializer, port);
 
     }
@@ -81,13 +108,24 @@ public class Master {
         Runtime.getRuntime().addShutdownHook(t);
     }
 
+    /**
+     * 检查必要的master配置参数
+     *
+     * @Author: linweisen
+     * @Date: 2021/12/16
+     * @Version: 1.0
+    **/
     private boolean checkProperties(Properties properties){
         if (!properties.containsKey(MasterConfigurationKey.MASTER_PORT)){
             LOGGER.error("master configuration must contains property<master.port>...");
             return false;
         }
-        if (!properties.contains(MasterConfigurationKey.IDLE_TIME)){
+        if (!properties.containsKey(MasterConfigurationKey.IDLE_TIME)){
             properties.setProperty(MasterConfigurationKey.IDLE_TIME, "60000");
+        }
+        if (!properties.containsKey(MasterConfigurationKey.STORAGE_PATH)){
+            LOGGER.error("master configuration must contains property<storage.path>...");
+            return false;
         }
         return true;
     }
