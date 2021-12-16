@@ -99,7 +99,7 @@ public class DefaultClient implements Client {
         packet.setType((byte)0x01);
         packet.setSerialize((byte)1);
         MkdirRequest request = new MkdirRequest();
-        request.setName("file");
+        request.setName("test");
         request.setParent("/");
         packet.setRequest(request);
         while (!client.connected){

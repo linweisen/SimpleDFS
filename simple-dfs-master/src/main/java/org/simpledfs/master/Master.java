@@ -79,7 +79,6 @@ public class Master {
             root = new Directory(IDirectory.SEPARATOR, IDirectory.ROOT_PARENT);
             root.setId(MD5Utils.getMD5String(IDirectory.SEPARATOR));
             root.setINode(INode.build("admin", "admin", new char[]{'-','d','r','x','r','w','x','r','w','x'}));
-            DirectoryLock.getInstance().addLock(root.getName());
             snapshot.write(root);
         }else{
             root = snapshot.read();
@@ -90,6 +89,7 @@ public class Master {
                 }
             }
         }
+        DirectoryLock.getInstance().addLock(root.getName());
 
         this.meta = new MetaContext.BuildContext()
                                         .root(root)
