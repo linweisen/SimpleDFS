@@ -6,7 +6,7 @@ public class SerializerChooser {
 
     }
 
-    public Serializer choose(byte serializeAlgorithm){
+    public Serializer choose(byte type){
         return KryoSerializer.getInstance();
     }
 
