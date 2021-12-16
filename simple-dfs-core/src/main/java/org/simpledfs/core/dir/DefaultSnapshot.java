@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -83,6 +85,7 @@ public class DefaultSnapshot implements Snapshot {
 
     @Override
     public IDirectory read() {
+        IDirectory root = null;
         Map<String, IDirectory> cache = new HashMap<>();
         long index;
         byte isDirectory;
@@ -110,10 +113,20 @@ public class DefaultSnapshot implements Snapshot {
                     break;
                 }
             }
+            for (Map.Entry<String, IDirectory> entry : cache.entrySet()){
+                IDirectory d = entry.getValue();
+                if (!d.getParentId().equals("-1")){
+                    IDirectory p = cache.get(d.getParentId());
+                    p.addChildDirectory(d);
+                }else {
+                    root = d;
+                }
+            }
+            cache.clear();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return root;
     }
 }

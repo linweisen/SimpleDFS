@@ -69,7 +69,7 @@ public class SnapshotTest {
     @Test
     public void read(){
         Snapshot defaultSnapshot = new DefaultSnapshot(storagePath);
-        defaultSnapshot.read();
-
+        IDirectory root = defaultSnapshot.read();
+        System.out.println(root);
     }
 }
