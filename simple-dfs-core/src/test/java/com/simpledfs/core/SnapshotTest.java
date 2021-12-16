@@ -27,17 +27,17 @@ public class SnapshotTest {
 
     @Before
     public void before(){
-        root = new Directory("/");
-        INode iNode = new INode();
-        iNode.setGroup("admin");
-        iNode.setUser("admin");
-        iNode.setSize(0);
-        iNode.setUpdateTime(System.currentTimeMillis());
-        root.setINode(iNode);
+        root = new Directory("/", "-1");
+        INode inode = new INode();
+        inode.setGroup("admin");
+        inode.setUser("admin");
+        inode.setSize(0);
+        inode.setUpdateTime(System.currentTimeMillis());
+        root.setINode(inode);
         root.setParentId("-1");
         root.setId(MD5Utils.getMD5String(root.getName()));
 
-        IDirectory user = new Directory("/user");
+        IDirectory user = new Directory("/user", root.getId());
         INode userNode = new INode();
         userNode.setGroup("admin");
         userNode.setUser("admin");

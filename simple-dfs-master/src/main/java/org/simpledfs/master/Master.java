@@ -11,6 +11,7 @@ import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.dir.*;
 import org.simpledfs.core.net.DefaultServer;
 import org.simpledfs.core.net.Server;
+import org.simpledfs.core.utils.MD5Utils;
 
 import java.util.List;
 import java.util.Properties;
@@ -64,7 +65,7 @@ public class Master {
      * @Version: 1.0
     **/
     public void init(Configuration config){
-        LOGGER.info("start init...");
+        LOGGER.info("master node start init...");
         shutdownHook();
 
         /*
@@ -75,6 +76,12 @@ public class Master {
         this.snapshot = new DefaultSnapshot(config.getString(MasterConfigurationKey.STORAGE_PATH));
         IDirectory root = null;
         if (snapshot.isEmptySnapshot()){
+            root = new Directory(IDirectory.SEPARATOR, IDirectory.ROOT_PARENT);
+            root.setId(MD5Utils.getMD5String(IDirectory.SEPARATOR));
+            root.setINode(INode.build("admin", "admin", new char[]{'-','d','r','x','r','w','x','r','w','x'}));
+            DirectoryLock.getInstance().addLock(root.getName());
+            snapshot.write(root);
+        }else{
             root = snapshot.read();
             List<IDirectory> children = root.getChildren();
             if (children != null){
@@ -82,20 +89,17 @@ public class Master {
                     DirectoryLock.getInstance().addLock(d.getName());
                 }
             }
-        }else{
-            root = new Directory("/");
-            DirectoryLock.getInstance().addLock(root.getName());
         }
 
         this.meta = new MetaContext.BuildContext()
                                         .root(root)
                                         .config(config)
+                                        .snapshot(snapshot)
                                         .build();
 
         MasterServerInitializer initializer = new MasterServerInitializer(this.meta);
         int port = config.getInt(MasterConfigurationKey.MASTER_PORT, 8080);
         this.server = new DefaultServer(Master.class, initializer, port);
-
     }
 
     public void shutdownHook(){

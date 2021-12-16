@@ -13,7 +13,16 @@ public class INode {
     private long updateTime;
 
     public INode() {
-        permission = new char[]{'-','-','-','-','-','-','-','-','-','-'};
+        permission = new char[]{'-','d','r','x','r','w','x','r','w','x'};
+    }
+
+    public static INode build(String user, String group, char[] permission){
+        INode inode = new INode();
+        inode.setUser(user == null ? "admin" : user);
+        inode.setGroup(group == null ? "admin" : group);
+        inode.setPermission(permission);
+        inode.setUpdateTime(System.currentTimeMillis());
+        return inode;
     }
 
     public long getSize() {

@@ -10,8 +10,8 @@ public class Directory extends IDirectory {
     public Directory() {
     }
 
-    public Directory(String name) {
-        super(name);
+    public Directory(String name, String parentId) {
+        super(name, parentId);
     }
 
     @Override
@@ -50,8 +50,7 @@ public class Directory extends IDirectory {
         if (childrenList == null){
             childrenList = new ArrayList<>();
         }
-        IDirectory directory = new Directory("/");
-        directory.setName(name);
+        IDirectory directory = new Directory(name, getId());
         childrenList.add(directory);
         return directory;
     }

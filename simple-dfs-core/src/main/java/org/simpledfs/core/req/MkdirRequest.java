@@ -7,6 +7,10 @@ import org.simpledfs.core.excutor.Processor;
 
 public class MkdirRequest extends AbstractRequest {
 
+    private String user;
+
+    private String group;
+
     private String name;
 
     private String parent;
@@ -37,4 +41,19 @@ public class MkdirRequest extends AbstractRequest {
         return processor;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
 }

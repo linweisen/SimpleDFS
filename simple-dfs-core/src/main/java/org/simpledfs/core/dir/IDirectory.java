@@ -1,5 +1,6 @@
 package org.simpledfs.core.dir;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.simpledfs.core.serialize.Serializer;
 
 import java.io.Serializable;
@@ -7,12 +8,17 @@ import java.util.List;
 
 public abstract class IDirectory implements Serializable {
 
+    @JsonIgnore
     private SnapshotHeader header;
 
     public static String SEPARATOR = "/";
 
+    public static String ROOT_PARENT = "ROOTS";
+
+    @JsonIgnore
     private String id;
 
+    @JsonIgnore
     private String parentId;
 
     private String name;
@@ -22,8 +28,9 @@ public abstract class IDirectory implements Serializable {
     public IDirectory() {
     }
 
-    public IDirectory(String name) {
+    public IDirectory(String name, String parentId) {
         this.name = name;
+        this.parentId = parentId;
     }
 
     public SnapshotHeader getHeader() {

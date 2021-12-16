@@ -7,11 +7,13 @@ import org.simpledfs.core.context.Context;
 import org.simpledfs.core.context.MetaContext;
 import org.simpledfs.core.dir.DirectoryLock;
 import org.simpledfs.core.dir.IDirectory;
+import org.simpledfs.core.dir.INode;
+import org.simpledfs.core.dir.Snapshot;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.req.MkdirRequest;
 import org.simpledfs.core.req.MkdirResponse;
 import org.simpledfs.core.req.Request;
-
+import org.simpledfs.core.utils.MD5Utils;
 
 import java.util.concurrent.locks.Lock;
 
@@ -32,38 +34,46 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
         MkdirResponse response = new MkdirResponse();
 
         String name = mkdirRequest.getName();
-
         String[] directoryLevel = getDirectoryLevel(mkdirRequest.getParent());
 
         String topParent = getTopParent(directoryLevel);
         Lock writeLock = DirectoryLock.getInstance().getLock(topParent).writeLock();
-        IDirectory root = ((MetaContext)this.context).getRoot();
+        MetaContext meta = (MetaContext)this.context;
+        IDirectory root = meta.getRoot();
         try {
             writeLock.lock();
             IDirectory newDir = null;
-            StringBuilder path = new StringBuilder();
-            if (directoryLevel == null){
+            StringBuilder path = new StringBuilder(IDirectory.SEPARATOR);
+            if (directoryLevel == null || directoryLevel.length == 0){
+
                 newDir = root.createChildDir(name);
-                path.append(IDirectory.SEPARATOR + name);
+                DirectoryLock.getInstance().addLock(name);
+                path.append(name);
             }else{
-                IDirectory des = null;
+                IDirectory des = root;
                 for (String d : directoryLevel){
-                    des = root.findDirectory(d);
+                    des = des.findDirectory(d);
                     if (des.isDirectory()){
-                        path.append(d);
+                        path.append(d + IDirectory.SEPARATOR);
                     }else{
-                        LOGGER.error("directory is not exits...");
+                        LOGGER.error("{} directory is not exits...", path);
                         response.setMessage(path + "directory is not exits...");
                         break;
                     }
                 }
                 newDir = des.createChildDir(name);
+                des.addChildDirectory(newDir);
+
             }
-            if (newDir == null){
-                response.setMessage(path + "directory make filed...");
-            }else{
-                response.setMessage(path + "directory make succeed...");
-            }
+            path.append(name);
+            String id = MD5Utils.getMD5String(path.toString());
+            newDir.setId(id);
+            INode inode = INode.build(mkdirRequest.getUser(), mkdirRequest.getGroup(),
+                    new char[]{'d', 'r', 'w', 'x', 'r', 'w', 'x', '-', '-', '-'});
+            newDir.setINode(inode);
+            Snapshot snapshot = meta.getSnapshot();
+            snapshot.write(newDir);
+            response.setMessage(path + "directory make succeed...");
         }finally {
             writeLock.unlock();
         }
@@ -71,11 +81,7 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
         writeResponse(ctx, packet);
     }
 
-    /**
-     *
-     * @param parent
-     * @return
-     */
+
     private String[] getDirectoryLevel(String parent){
         if (parent == null){
             return null;

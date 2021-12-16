@@ -32,8 +32,7 @@ public class MkdirRequestTest {
     }
 
     private IDirectory buildDirectory(){
-        IDirectory root = new Directory("/");
-        root.setName("/");
+        IDirectory root = new Directory("/", "-1");
         return root;
     }
 }

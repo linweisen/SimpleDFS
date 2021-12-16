@@ -113,7 +113,7 @@ public class DefaultSnapshot implements Snapshot {
             }
             for (Map.Entry<String, IDirectory> entry : cache.entrySet()){
                 IDirectory d = entry.getValue();
-                if (!d.getParentId().equals("-1")){
+                if (!d.getParentId().equals(IDirectory.ROOT_PARENT)){
                     IDirectory p = cache.get(d.getParentId());
                     p.addChildDirectory(d);
                 }else {

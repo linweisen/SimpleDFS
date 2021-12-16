@@ -2,6 +2,7 @@ package org.simpledfs.core.context;
 
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.dir.IDirectory;
+import org.simpledfs.core.dir.Snapshot;
 import org.simpledfs.core.node.NodeInfo;
 
 import java.util.HashMap;
@@ -14,6 +15,8 @@ public class MetaContext implements Context{
     private IDirectory root;
 
     private Map<String, NodeInfo> nodeMap;
+
+    private Snapshot snapshot;
 
     private MetaContext(){
 
@@ -42,6 +45,14 @@ public class MetaContext implements Context{
         return config;
     }
 
+    public Snapshot getSnapshot() {
+        return snapshot;
+    }
+
+    public void setSnapshot(Snapshot snapshot) {
+        this.snapshot = snapshot;
+    }
+
     public static class BuildContext{
 
         private MetaContext metaContext = new MetaContext();
@@ -56,8 +67,13 @@ public class MetaContext implements Context{
             return this;
         }
 
-        public BuildContext workInfoMap(Map<String, NodeInfo> workInfoMap){
+        public BuildContext nodeInfoMap(Map<String, NodeInfo> workInfoMap){
             this.metaContext.nodeMap = workInfoMap;
+            return this;
+        }
+
+        public BuildContext snapshot(Snapshot snapshot){
+            this.metaContext.snapshot = snapshot;
             return this;
         }
 

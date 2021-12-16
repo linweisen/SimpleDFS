@@ -11,8 +11,8 @@ public class File extends IDirectory {
     public File() {
     }
 
-    public File(String name) {
-        super(name);
+    public File(String name, String parentId) {
+        super(name, parentId);
     }
 
     @Override
