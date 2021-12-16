@@ -99,8 +99,8 @@ public class DefaultClient implements Client {
         packet.setType((byte)0x01);
         packet.setSerialize((byte)1);
         MkdirRequest request = new MkdirRequest();
-        request.setName("test");
-        request.setParent("/");
+        request.setName("/user");
+        request.setParent("/name");
         packet.setRequest(request);
         while (!client.connected){
             Thread.sleep(1000);

@@ -38,6 +38,7 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
         MkdirResponse response = new MkdirResponse();
 
         Lock writeLock = null;
+        //todo 需要加入事务
         try {
 
             //1、去掉文件夹名称前后字符'/';2、检测是否有特殊字符
@@ -76,6 +77,7 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
                         break;
                     }
                 }
+                checkDirectoryExist(des, name);
                 newDir = des.createChildDir(name);
                 des.addChildDirectory(newDir);
 
@@ -109,10 +111,13 @@ public class MkdirRequestProcessor extends AbstractRequestProcessor {
             return null;
         }
         StringBuilder tmp = new StringBuilder(parent);
-        if (!parent.endsWith(IDirectory.SEPARATOR)){
-            tmp.append(IDirectory.SEPARATOR);
+        if (parent.endsWith(IDirectory.SEPARATOR)){
+            tmp.deleteCharAt(tmp.length() - 1);
         }
-        return parent.split(IDirectory.SEPARATOR);
+        if (parent.startsWith(IDirectory.SEPARATOR)){
+            tmp.deleteCharAt(0);
+        }
+        return tmp.toString().split(IDirectory.SEPARATOR);
     }
 
     private String getTopParent(String[] directoryLevel){
