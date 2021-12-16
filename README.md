@@ -11,7 +11,11 @@ Work是SDFS的工作节点，主要用来做实际的文件存储工作
 
 Quick Start
 ------------
-待完善
+目前构建脚本还不够完善，建议使用IntelliJ IDEA导入启动  
+1、git clone https://github.com/linweisen/SimpleDFS.git  
+2、导入IntelliJ IDEA  
+3、Master的启动类为org.simpledfs.master.Master,需要在输入参数中配置master-config.xml路径  
+4、Work的启动类为org.simpledfs.work.Work,需要在输入参数中配置work-config.xml路径
 
 整体项目目录结构如下
 ------------
@@ -32,5 +36,6 @@ SimpleDFS
 ├── simple-dfs-work
 ```
 
-
-
+其他说明
+------------
+源码在编写的过程中也参考借鉴了github上面大量开源项目中的代码，如果其中开源项目的作者认为代码有抄袭嫌疑，欢迎指出，本人会纠正删除
