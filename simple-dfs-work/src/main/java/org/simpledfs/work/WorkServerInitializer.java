@@ -5,7 +5,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 
 /**
- * @author houyi
+ * @author linweisen
  */
 public class WorkServerInitializer extends ChannelInitializer<SocketChannel> {
 

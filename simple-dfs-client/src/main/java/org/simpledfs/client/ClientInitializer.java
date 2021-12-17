@@ -7,7 +7,7 @@ import org.simpledfs.core.packet.PacketMessageCodec;
 
 
 /**
- * @author houyi
+ * @author linweisen
  */
 public class ClientInitializer extends ChannelInitializer<SocketChannel> {
 

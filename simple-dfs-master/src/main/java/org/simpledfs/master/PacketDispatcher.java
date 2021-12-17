@@ -47,7 +47,6 @@ public class PacketDispatcher extends ByteToMessageDecoder {
             in.clear();
             ctx.close();
         }
-
     }
 
     private void dispatchToPacket(ChannelHandlerContext ctx) {

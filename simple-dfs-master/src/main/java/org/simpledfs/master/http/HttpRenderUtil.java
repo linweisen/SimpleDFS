@@ -9,7 +9,7 @@ import io.netty.util.CharsetUtil;
 /**
  * HttpRenderUtil
  *
- * @author houyi
+ * @author linweisen
  */
 public class HttpRenderUtil {
 

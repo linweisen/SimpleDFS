@@ -3,7 +3,7 @@ package org.simpledfs.master.http;
 /**
  * 返回的响应类型
  *
- * @author houyi
+ * @author linweisen
  */
 public enum RenderType {
 
