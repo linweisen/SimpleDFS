@@ -11,7 +11,7 @@ import java.util.UUID;
 public class DefaultUUIDGenerator implements UUIDGenerator {
 
     @Override
-    public String getUID() {
-        return UUID.randomUUID().toString();
+    public long getUID() {
+        return UUID.randomUUID().node();
     }
 }
