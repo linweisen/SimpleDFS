@@ -18,7 +18,7 @@
     </property>
     <property>
         <name>storage.path</name>
-        <value>/s/s/</value>
+        <value>/tmp/simpledfs/work</value>
     </property>
     <property>
         <name>work.name</name>

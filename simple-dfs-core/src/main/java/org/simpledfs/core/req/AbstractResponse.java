@@ -6,6 +6,8 @@ public abstract class AbstractResponse implements Response{
 
     private String message;
 
+    private int code;
+
     public AbstractResponse(byte type) {
         this.type = type;
     }
