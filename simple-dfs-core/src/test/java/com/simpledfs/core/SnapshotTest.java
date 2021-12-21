@@ -8,6 +8,7 @@ import org.simpledfs.core.serialize.KryoSerializer;
 import org.simpledfs.core.serialize.Serializer;
 import org.simpledfs.core.utils.MD5Utils;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,14 +61,14 @@ public class SnapshotTest {
     }
 
     @Test
-    public void storage(){
+    public void storage() throws FileNotFoundException {
         Snapshot defaultSnapshot = new DefaultSnapshot(storagePath);
         defaultSnapshot.write(root);
         defaultSnapshot.write(root.getChildren().get(0));
     }
 
     @Test
-    public void read(){
+    public void read() throws FileNotFoundException {
         Snapshot defaultSnapshot = new DefaultSnapshot(storagePath);
         IDirectory root = defaultSnapshot.read();
         System.out.println(root);

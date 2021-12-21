@@ -2,6 +2,7 @@ package org.simpledfs.master;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.command.Command;
@@ -13,6 +14,7 @@ import org.simpledfs.core.net.DefaultServer;
 import org.simpledfs.core.net.Server;
 import org.simpledfs.core.utils.MD5Utils;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Properties;
 
@@ -73,7 +75,14 @@ public class Master {
          * 1、为空则初始化root directory
          * 2、不为空则从镜像文件中初始化整个directory tree
          */
-        this.snapshot = new DefaultSnapshot(config.getString(MasterConfigurationKey.STORAGE_PATH));
+        try {
+            this.snapshot = new DefaultSnapshot(config.getString(MasterConfigurationKey.STORAGE_PATH));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            LOGGER.error("{} must been created before master init, master will exit...", config.getString(MasterConfigurationKey.STORAGE_PATH));
+            System.exit(0);
+        }
+
         IDirectory root = null;
         if (snapshot.isEmptySnapshot()){
             root = new Directory(IDirectory.SEPARATOR, IDirectory.ROOT_PARENT);

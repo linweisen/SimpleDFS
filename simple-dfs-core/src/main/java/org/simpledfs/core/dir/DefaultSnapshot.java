@@ -1,5 +1,7 @@
 package org.simpledfs.core.dir;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.serialize.KryoSerializer;
 import org.simpledfs.core.serialize.Serializer;
 
@@ -30,21 +32,17 @@ public class DefaultSnapshot implements Snapshot {
 
     private Serializer serializer;
 
-    public DefaultSnapshot(String storagePath) {
+    public DefaultSnapshot(String storagePath) throws FileNotFoundException{
         this(storagePath, KryoSerializer.getInstance());
     }
 
-    public DefaultSnapshot(String storagePath, Serializer serializer) {
+    public DefaultSnapshot(String storagePath, Serializer serializer) throws FileNotFoundException{
         this.storagePath = storagePath;
-        try {
-            if (!storagePath.endsWith(IDirectory.SEPARATOR)){
-                storagePath += IDirectory.SEPARATOR;
-            }
-            this.directoryFile = new RandomAccessFile(new File(storagePath + directoryFileName), "rw");
-            this.fileBlockFile = new RandomAccessFile(new File(storagePath + fileBlockFileName), "rw");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (!storagePath.endsWith(IDirectory.SEPARATOR)){
+            storagePath += IDirectory.SEPARATOR;
         }
+        this.directoryFile = new RandomAccessFile(new File(storagePath + directoryFileName), "rw");
+        this.fileBlockFile = new RandomAccessFile(new File(storagePath + fileBlockFileName), "rw");
         this.serializer = serializer;
     }
 
