@@ -4,11 +4,11 @@ SHELL_DIR=$(cd $(dirname $0); pwd)
 BASE_DIR=${SHELL_DIR%????}
 #LIB="${BASE_DIR}/lib/"
 DUMP_OPTS="-Xmx512m "
-GC_OPTS="-XX:+PrintGCApplicationStoppedTime XX:+PrintHeapAtGC -XX:+PrintGCDateStamps -Xloggc:./gc/gc.log "
+GC_OPTS="-XX:+PrintGCApplicationStoppedTime -XX:+PrintHeapAtGC -XX:+PrintGCDateStamps -Xloggc:gc.log "
 JAVA_OPTS=${DUMP_OPTS}${GC_OPTS}
 #START_CLASS="org.simpledfs.master.Master"
-stop(){
-  nohup java ${JAVA_OPTS} -jar ${BASE_DIR}/build/simple-dfs-master-jar-with-dependencies.jar -f ${BASE_DIR}/conf/master-config.xml >/dev/null 2>&1 &
+start(){
+  nohup java ${JAVA_OPTS} -jar ${BASE_DIR}/build/simple-dfs-master-jar-with-dependencies.jar -f ${BASE_DIR}/conf/master-config.xml 2>&1 &
 }
 
 

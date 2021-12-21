@@ -60,10 +60,17 @@ public class DefaultServer implements Server {
                     watch.stop();
                     long cost = watch.getTime();
                     LOGGER.info("[{}] Startup at port:{} cost:{}[ms]", clazz.getSimpleName(), port, cost);
-
+                }else{
+                    LOGGER.error("[{}] boot failure cause by {}, port is {}, master will exit...", clazz.getSimpleName(),
+                            future.cause().getMessage(), port);
+                    future.cancel(true);
+                    bossGroup.shutdownGracefully();
+                    workerGroup.shutdownGracefully();
                 }
             }
         });
+
     }
+
 
 }
