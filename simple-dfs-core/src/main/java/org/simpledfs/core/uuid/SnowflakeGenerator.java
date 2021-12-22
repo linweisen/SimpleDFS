@@ -1,9 +1,5 @@
 package org.simpledfs.core.uuid;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 /**
  * @author linweisen
@@ -12,77 +8,84 @@ import java.net.UnknownHostException;
  * @date 2021/12/14
  **/
 public class SnowflakeGenerator implements UUIDGenerator {
+
+    private final long tEpoch = System.currentTimeMillis();
+
+    private final int nodeDigits = 7;
+
+    private final int datacenterDigits = 3;
+
+    private final int sequenceDigits = 12;
+
+    private final int nodeShift = sequenceDigits;
+
+    private final int datacenterShift = sequenceDigits + nodeDigits;
+
+    private final int timestampLeftShift = sequenceDigits + nodeDigits + datacenterDigits;
+
+    private final int sequenceMask = ~(-1 << sequenceDigits);
+
+    private final int node;
+
+    private final int datacenter;
+
+    private long sequence = 0L;
+
+    private long lastTimestamp = -1L;
+
+    public SnowflakeGenerator(int node, int datacenter) {
+        int maxNode = ~(-1 << nodeDigits);
+        if (node > maxNode || node < 0) {
+            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", node));
+        }
+        int maxDatacenter = ~(-1 << datacenterDigits);
+        if (datacenter > maxDatacenter || datacenter < 0) {
+            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", datacenter));
+        }
+        this.node = node;
+        this.datacenter = datacenter;
+    }
+
     @Override
     public long getUID() {
-        return getDatacenterId();
+        return nextId();
     }
 
-    private final long sequenceBits = 12;
-    private final long datacenterIdBits = 10L;
-    private final long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
 
-    private final long datacenterIdShift = sequenceBits;
-    private final long timestampLeftShift = sequenceBits + datacenterIdBits;
+    public synchronized long nextId() {
+        long timestamp = currentTime();
 
-    private final long twepoch = 1288834974657L;
-    private final long datacenterId;
-    private final long sequenceMax = 4096;
-
-    private volatile long lastTimestamp = -1L;
-    private volatile long sequence = 0L;
-
-
-
-
-    public SnowflakeGenerator() {
-        datacenterId = getDatacenterId();
-//        if (datacenterId > maxDatacenterId || datacenterId < 0) {
-//            throw new GetHardwareIdFailedException("datacenterId > maxDatacenterId");
-//        }
-    }
-
-    public synchronized String generateLongId()  {
-        long timestamp = System.currentTimeMillis();
+        if (timestamp < lastTimestamp) {
+            throw new RuntimeException(
+                    String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
+        }
 
         if (lastTimestamp == timestamp) {
-            sequence = (sequence + 1) % sequenceMax;
+            sequence = (sequence + 1) & sequenceMask;
             if (sequence == 0) {
                 timestamp = tilNextMillis(lastTimestamp);
             }
-        } else {
-            sequence = 0;
+        }else {
+            sequence = 0L;
         }
+
         lastTimestamp = timestamp;
-        Long id = ((timestamp - twepoch) << timestampLeftShift) |
-                (datacenterId << datacenterIdShift) |
-                sequence;
-        return id.toString();
+        return ((timestamp - tEpoch) << timestampLeftShift)
+                | (datacenter << datacenterShift)
+                | (node << nodeShift)
+                | sequence;
+
+    }
+
+    protected long currentTime() {
+        return System.currentTimeMillis();
     }
 
     protected long tilNextMillis(long lastTimestamp) {
-        long timestamp = System.currentTimeMillis();
+        long timestamp = currentTime();
         while (timestamp <= lastTimestamp) {
-            timestamp = System.currentTimeMillis();
+            timestamp = currentTime();
         }
         return timestamp;
-    }
-
-    protected long getDatacenterId() {
-
-        try {
-            InetAddress ip = InetAddress.getLocalHost();
-            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-            long id;
-            if (network == null) {
-                id = 1;
-            } else {
-                byte[] mac = network.getHardwareAddress();
-                id = ((0x000000FF & (long) mac[mac.length - 1]) | (0x0000FF00 & (((long) mac[mac.length - 2]) << 8))) >> 6;
-            }
-            return id;
-        } catch (UnknownHostException | SocketException e) {
-            e.printStackTrace();
-        }
-        return -1L;
     }
 }

@@ -32,6 +32,7 @@ public class DefaultClient implements Client {
     private volatile int retry = 0;
 
     private boolean connectAsync;
+
     public DefaultClient(ServerInfo serverInfo, boolean connectAsync) {
         this.serverInfo = serverInfo;
         this.connectAsync = connectAsync;
@@ -128,7 +129,4 @@ public class DefaultClient implements Client {
         return channelInitializer;
     }
 
-    public void setChannelInitializer(ChannelInitializer<SocketChannel> channelInitializer) {
-        this.channelInitializer = channelInitializer;
-    }
 }
