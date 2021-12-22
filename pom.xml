@@ -6,12 +6,13 @@
 
     <groupId>org.simpledfs</groupId>
     <artifactId>simple-dfs</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <modules>
         <module>simple-dfs-master</module>
         <module>simple-dfs-work</module>
         <module>simple-dfs-client</module>
         <module>simple-dfs-core</module>
+        <module>sample-dfs-example</module>
     </modules>
     <packaging>pom</packaging>
 

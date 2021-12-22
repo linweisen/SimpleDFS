@@ -61,7 +61,6 @@ public class Work {
             e.printStackTrace();
         }
         this.server.start();
-
     }
 
     public void init(){
@@ -101,7 +100,7 @@ public class Work {
             return false;
         }
         if (!properties.containsKey(WorkConfigurationKey.WORK_ID)){
-            properties.setProperty(WorkConfigurationKey.WORK_ID, uuidGenerator.getUID());
+            properties.setProperty(WorkConfigurationKey.WORK_ID, String.valueOf(uuidGenerator.getUID()));
         }
         if (!properties.containsKey(WorkConfigurationKey.WORK_NAME)){
             properties.setProperty(WorkConfigurationKey.WORK_NAME, "work-" + properties.getProperty(WorkConfigurationKey.WORK_ID));
