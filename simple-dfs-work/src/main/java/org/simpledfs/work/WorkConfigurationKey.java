@@ -22,4 +22,6 @@ public class WorkConfigurationKey {
 
     public static String WORK_ID = "work.id";
 
+    public static String WORK_DATACENTER_ID = "work.datacenter.id";
+
 }

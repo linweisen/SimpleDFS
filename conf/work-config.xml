@@ -28,4 +28,8 @@
         <name>work.id</name>
         <value>1</value>
     </property>
+    <property>
+        <name>work.datacenter.id</name>
+        <value>1</value>
+    </property>
 </configuration>

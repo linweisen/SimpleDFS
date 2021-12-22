@@ -8,10 +8,15 @@ import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
 import org.simpledfs.core.net.*;
+import org.simpledfs.core.utils.LocalAddressUtils;
 import org.simpledfs.core.uuid.DefaultUUIDGenerator;
+import org.simpledfs.core.uuid.SnowflakeGenerator;
 import org.simpledfs.core.uuid.UUIDGenerator;
 
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Properties;
+import java.util.UUID;
 
 /**
  * work节点
@@ -32,8 +37,7 @@ public class Work {
 
     private NodeInfoSelfUpdater updater;
 
-    //todo change to snowflake algorithm
-    private UUIDGenerator uuidGenerator = new DefaultUUIDGenerator();
+    private UUIDGenerator uuidGenerator;
 
     public Work(Command command) {
         String masterConfigFile = command.getFile();
@@ -67,6 +71,7 @@ public class Work {
         LOGGER.info("{} work node start init...", config.getString(""));
         shutdownHook();
 
+//        uuidGenerator = new SnowflakeGenerator(config.getInt(WorkConfigurationKey.WORK_ID), 0);
         //init work info updater
         this.updater = new NodeInfoSelfUpdater(config.getString(WorkConfigurationKey.WORK_ID),
                 config.getString(WorkConfigurationKey.WORK_NAME), 6000);
@@ -99,12 +104,22 @@ public class Work {
             LOGGER.error("work configuration must contains property<master.address>...");
             return false;
         }
+        if (!properties.containsKey(WorkConfigurationKey.WORK_DATACENTER_ID)){
+
+        }
         if (!properties.containsKey(WorkConfigurationKey.WORK_ID)){
-            properties.setProperty(WorkConfigurationKey.WORK_ID, String.valueOf(uuidGenerator.getUID()));
+            try {
+                properties.setProperty(WorkConfigurationKey.WORK_ID, String.valueOf(LocalAddressUtils.getLocalIPIndex()));
+            } catch (UnknownHostException | SocketException e) {
+                LOGGER.error("Get local ip failed");
+                e.printStackTrace();
+                properties.setProperty(WorkConfigurationKey.WORK_ID, UUID.randomUUID().toString());
+            }
         }
         if (!properties.containsKey(WorkConfigurationKey.WORK_NAME)){
             properties.setProperty(WorkConfigurationKey.WORK_NAME, "work-" + properties.getProperty(WorkConfigurationKey.WORK_ID));
         }
+
         return true;
     }
     
