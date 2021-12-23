@@ -18,4 +18,6 @@ package org.simpledfs.core.req;
  * @author linweisen
  */
 public interface Response {
+
+    String getMessage();
 }

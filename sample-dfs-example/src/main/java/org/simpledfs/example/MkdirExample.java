@@ -3,6 +3,7 @@ package org.simpledfs.example;
 import org.simpledfs.client.SimpleClient;
 import org.simpledfs.core.net.ServerInfo;
 import org.simpledfs.core.req.MkdirRequest;
+import org.simpledfs.core.req.Response;
 
 /**
  * @author linweisen
@@ -17,16 +18,8 @@ public class MkdirExample {
         SimpleClient client = new SimpleClient(serverInfo, false);
         client.connect();
         MkdirRequest request = new MkdirRequest();
-        client.send(request);
-//        Packet packet = new Packet();
-//        packet.setId(1L);
-//        packet.setType((byte)0x01);
-//        packet.setSerialize((byte)1);
-//        MkdirRequest request = new MkdirRequest();
-//        request.setName("/user");
-//        request.setParent("/name");
-//        packet.setRequest(request);
-//
-//        client.sendPacket(packet);
+        request.setName("/name2");
+        Response response = client.send(request);
+
     }
 }

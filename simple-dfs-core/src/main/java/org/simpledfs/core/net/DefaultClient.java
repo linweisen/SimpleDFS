@@ -12,7 +12,15 @@ import io.netty.util.concurrent.GenericFutureListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.packet.Packet;
+import org.simpledfs.core.packet.PendingPackets;
 import org.simpledfs.core.req.Request;
+import org.simpledfs.core.req.Response;
+import org.simpledfs.core.serialize.SerializeType;
+import org.simpledfs.core.serialize.SerializerChooser;
+import org.simpledfs.core.uuid.SnowflakeGenerator;
+import org.simpledfs.core.uuid.UUIDGenerator;
+
+import java.util.concurrent.CompletableFuture;
 
 public class DefaultClient implements Client {
 
@@ -33,6 +41,8 @@ public class DefaultClient implements Client {
     private volatile int retry = 0;
 
     private boolean connectAsync;
+
+    private UUIDGenerator uuid = new SnowflakeGenerator(0, 0);
 
     public DefaultClient(ServerInfo serverInfo, boolean connectAsync) {
         this.serverInfo = serverInfo;
@@ -87,13 +97,37 @@ public class DefaultClient implements Client {
         } catch (InterruptedException e) {
             e.printStackTrace();
             LOGGER.warn("[{}] Connect to {} failed, cause={}", DefaultClient.class.getSimpleName(), serverInfo, e.getMessage());
-
+            group.shutdownGracefully();
+        } catch (Exception e){
+            e.printStackTrace();
+            group.shutdownGracefully();
         }
     }
 
     @Override
-    public void send(Request request) {
-
+    public Response send(Request request) {
+        CompletableFuture<Packet> promise = new CompletableFuture<>();
+        Packet packet = new Packet();
+        packet.setRequest(request);
+        packet.setType(request.getType());
+        Long id = uuid.getUID();
+        PendingPackets.add(id, promise);
+        packet.setId(id);
+        packet.setSerialize(SerializeType.Kryo.getType());
+        ChannelFuture future = channel.writeAndFlush(packet);
+        future.addListener(new GenericFutureListener<Future<? super Void>>() {
+            @Override
+            public void operationComplete(Future<? super Void> f) throws Exception {
+                if (!f.isSuccess()) {
+                    CompletableFuture<Packet> pending = PendingPackets.remove(id);
+                    if (pending != null) {
+                        pending.completeExceptionally(f.cause());
+                    }
+                }
+            }
+        });
+        Packet resPacket = promise.join();
+        return resPacket.getResponse();
     }
 
     private Bootstrap connect(){

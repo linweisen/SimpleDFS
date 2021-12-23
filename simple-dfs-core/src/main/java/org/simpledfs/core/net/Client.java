@@ -4,6 +4,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import org.simpledfs.core.packet.Packet;
 import org.simpledfs.core.req.Request;
+import org.simpledfs.core.req.Response;
 
 public interface Client {
 
@@ -11,7 +12,7 @@ public interface Client {
 
     public void start();
 
-    public void send(Request request);
+    public Response send(Request request);
 
     public void setInitializer(ChannelInitializer<SocketChannel> channelInitializer);
 

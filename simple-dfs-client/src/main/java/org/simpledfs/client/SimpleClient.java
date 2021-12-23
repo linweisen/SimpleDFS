@@ -22,6 +22,10 @@ public class SimpleClient extends DefaultClient {
         setInitializer(this.initializer);
     }
 
+    public SimpleClient(ServerInfo serverInfo) {
+        this(serverInfo, false);
+    }
+
     public void connect(){
         if (isConnectAsync()){
             startAsync();
@@ -29,15 +33,4 @@ public class SimpleClient extends DefaultClient {
             start();
         }
     }
-
-
-//    public Response send(Request request){
-//        Packet packet = new Packet();
-//        packet.setId(1L);
-//        packet.setType((byte)0x01);
-//        packet.setSerialize((byte)1);
-//        packet.setRequest(request);
-//        send(packet);
-//        return initializer.getResponse();
-//    }
 }

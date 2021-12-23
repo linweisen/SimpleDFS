@@ -12,6 +12,7 @@ public abstract class AbstractResponse implements Response{
         this.type = type;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }

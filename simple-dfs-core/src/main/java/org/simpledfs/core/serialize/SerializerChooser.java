@@ -10,6 +10,10 @@ public class SerializerChooser {
         return KryoSerializer.getInstance();
     }
 
+    public Serializer choose(SerializeType type){
+        return KryoSerializer.getInstance();
+    }
+
     private static class SerializerChooserHolder {
 
         private static SerializerChooser chooser = new SerializerChooser();
