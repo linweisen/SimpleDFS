@@ -2,9 +2,8 @@ package org.simpledfs.client;
 
 import org.simpledfs.core.net.DefaultClient;
 import org.simpledfs.core.net.ServerInfo;
-import org.simpledfs.core.packet.Packet;
-import org.simpledfs.core.req.Request;
-import org.simpledfs.core.req.Response;
+
+import java.io.File;
 
 /**
  * @author linweisen
@@ -32,5 +31,13 @@ public class SimpleClient extends DefaultClient {
         }else{
             start();
         }
+    }
+
+    public void uploadFile(File file){
+
+    }
+
+    private void askForUploadFile(String path, String fileName){
+
     }
 }

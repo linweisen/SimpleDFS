@@ -14,4 +14,6 @@ public class MasterConfigurationKey {
 
     public static String STORAGE_PATH = "storage.path";
 
+    public static String STORAGE_REPLICATION = "storage.replication";
+
 }

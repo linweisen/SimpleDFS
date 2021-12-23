@@ -12,4 +12,8 @@
         <name>storage.path</name>
         <value>/tmp/simpledfs/master</value>
     </property>
+    <property>
+        <name>storage.replication</name>
+        <name>2</name>
+    </property>
 </configuration>

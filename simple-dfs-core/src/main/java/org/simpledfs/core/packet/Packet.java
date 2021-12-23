@@ -34,7 +34,7 @@ import java.io.Serializable;
  * +---------------+-------------------------------+----------+
  * |    0x01       |  create directory request     |   0x81   |
  * +---------------+-------------------------------+----------+
- * |    0x02       |  save file request            |   0x82   |
+ * |    0x02       |  check upload file request    |   0x82   |
  * +---------------+-------------------------------+----------+
  * </p>
  * @author linweisen

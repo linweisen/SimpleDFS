@@ -1,5 +1,7 @@
 package org.simpledfs.core.req;
 
+import org.simpledfs.core.node.NodeInfo;
+
 /**
  * @author linweisen
  * @version 1.0
@@ -8,7 +10,17 @@ package org.simpledfs.core.req;
  **/
 public class GetWorkInfoResponse extends AbstractResponse {
 
+    private NodeInfo nodeInfo;
+
     public GetWorkInfoResponse() {
         super((byte)0x83);
+    }
+
+    public NodeInfo getNodeInfo() {
+        return nodeInfo;
+    }
+
+    public void setNodeInfo(NodeInfo nodeInfo) {
+        this.nodeInfo = nodeInfo;
     }
 }

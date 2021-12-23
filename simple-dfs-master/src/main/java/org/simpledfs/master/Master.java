@@ -140,6 +140,9 @@ public class Master {
             LOGGER.error("master configuration must contains property<storage.path>...");
             return false;
         }
+        if (!properties.containsKey(MasterConfigurationKey.STORAGE_REPLICATION)){
+            properties.setProperty(MasterConfigurationKey.STORAGE_REPLICATION, "2");
+        }
         return true;
     }
 
