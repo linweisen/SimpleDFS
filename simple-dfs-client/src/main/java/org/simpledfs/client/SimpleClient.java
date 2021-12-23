@@ -30,13 +30,14 @@ public class SimpleClient extends DefaultClient {
         }
     }
 
-    public Response send(Request request){
-        Packet packet = new Packet();
-        packet.setId(1L);
-        packet.setType((byte)0x01);
-        packet.setSerialize((byte)1);
-        packet.setRequest(request);
-        send(packet);
-        return initializer.getResponse();
-    }
+
+//    public Response send(Request request){
+//        Packet packet = new Packet();
+//        packet.setId(1L);
+//        packet.setType((byte)0x01);
+//        packet.setSerialize((byte)1);
+//        packet.setRequest(request);
+//        send(packet);
+//        return initializer.getResponse();
+//    }
 }

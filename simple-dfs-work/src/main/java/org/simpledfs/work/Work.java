@@ -9,7 +9,6 @@ import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
 import org.simpledfs.core.net.*;
 import org.simpledfs.core.utils.LocalAddressUtils;
-import org.simpledfs.core.uuid.DefaultUUIDGenerator;
 import org.simpledfs.core.uuid.SnowflakeGenerator;
 import org.simpledfs.core.uuid.UUIDGenerator;
 
@@ -71,7 +70,8 @@ public class Work {
         LOGGER.info("{} work node start init...", config.getString(""));
         shutdownHook();
 
-//        uuidGenerator = new SnowflakeGenerator(config.getInt(WorkConfigurationKey.WORK_ID), 0);
+        //todo node and datacenter need configuration?
+        uuidGenerator = new SnowflakeGenerator(0, 0);
         //init work info updater
         this.updater = new NodeInfoSelfUpdater(config.getString(WorkConfigurationKey.WORK_ID),
                 config.getString(WorkConfigurationKey.WORK_NAME), 6000);
@@ -104,9 +104,7 @@ public class Work {
             LOGGER.error("work configuration must contains property<master.address>...");
             return false;
         }
-        if (!properties.containsKey(WorkConfigurationKey.WORK_DATACENTER_ID)){
 
-        }
         if (!properties.containsKey(WorkConfigurationKey.WORK_ID)){
             try {
                 properties.setProperty(WorkConfigurationKey.WORK_ID, String.valueOf(LocalAddressUtils.getLocalIPIndex()));

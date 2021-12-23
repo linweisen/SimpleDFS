@@ -12,6 +12,7 @@ import io.netty.util.concurrent.GenericFutureListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.simpledfs.core.packet.Packet;
+import org.simpledfs.core.req.Request;
 
 public class DefaultClient implements Client {
 
@@ -90,6 +91,11 @@ public class DefaultClient implements Client {
         }
     }
 
+    @Override
+    public void send(Request request) {
+
+    }
+
     private Bootstrap connect(){
         this.group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
@@ -110,10 +116,6 @@ public class DefaultClient implements Client {
         return connectMonitor;
     }
 
-    @Override
-    public void send(Packet packet) {
-
-    }
 
     @Override
     public void setInitializer(ChannelInitializer<SocketChannel> channelInitializer) {
