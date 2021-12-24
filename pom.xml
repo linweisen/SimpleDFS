@@ -12,7 +12,8 @@
         <module>simple-dfs-work</module>
         <module>simple-dfs-client</module>
         <module>simple-dfs-core</module>
-        <module>sample-dfs-example</module>
+        <module>simple-dfs-example</module>
+        <module>simple-dfs-raft</module>
     </modules>
     <packaging>pom</packaging>
 

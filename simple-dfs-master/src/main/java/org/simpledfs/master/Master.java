@@ -31,6 +31,9 @@ public class Master {
 
     private Server server;
 
+    /**
+     * 元数据上下文
+     */
     private MetaContext meta;
 
     private Snapshot snapshot;

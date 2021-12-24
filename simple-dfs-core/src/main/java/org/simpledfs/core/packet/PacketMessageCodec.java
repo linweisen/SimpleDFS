@@ -55,7 +55,6 @@ public class PacketMessageCodec extends ByteToMessageCodec<Packet> {
         byteBuf.markReaderIndex();
         // do common check before decode
         byte magic = byteBuf.readByte();
-//        Assert.state(magic == Packet.PACKET_MAGIC, "magic number is invalid");
         byte type = byteBuf.readByte();
         long id = byteBuf.readLong();
 
