@@ -60,6 +60,12 @@ public class PacketDispatcher extends ByteToMessageDecoder {
         ctx.fireChannelActive();
     }
 
+
+    /*
+     *  
+     *
+     *
+     */
     private void dispatchToHeartPacket(ChannelHandlerContext ctx){
         ChannelPipeline pipeline = ctx.pipeline();
         pipeline.addLast(new IdleStateChecker(meta.getConfig().getInt(MasterConfigurationKey.IDLE_TIME, 60)));

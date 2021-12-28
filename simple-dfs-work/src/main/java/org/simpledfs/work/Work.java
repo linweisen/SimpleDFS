@@ -4,6 +4,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.dom4j.DocumentException;
 import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
@@ -40,7 +41,12 @@ public class Work {
 
     public Work(Command command) {
         String masterConfigFile = command.getFile();
-        Properties properties = ConfigurationParser.read(masterConfigFile);
+        Properties properties = null;
+        try {
+            properties = new ConfigurationParser().read(masterConfigFile);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
         if (properties == null){
             LOGGER.error("configuration of the work node parse filed, work will exit...");
             System.exit(0);

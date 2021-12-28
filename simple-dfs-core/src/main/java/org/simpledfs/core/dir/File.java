@@ -1,7 +1,5 @@
 package org.simpledfs.core.dir;
 
-import org.simpledfs.core.serialize.Serializer;
-
 import java.util.List;
 
 public class File extends IDirectory {

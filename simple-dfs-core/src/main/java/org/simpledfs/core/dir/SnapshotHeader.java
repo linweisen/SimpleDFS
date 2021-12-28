@@ -8,12 +8,17 @@ package org.simpledfs.core.dir;
  **/
 public class SnapshotHeader {
 
+    /**
+     * 索引位置
+     */
     private long index;
 
-    //1 is deleted
+    /**
+     * 1 是删除
+     */
     private byte isDeleted = 0;
 
-    /*
+    /**
      * 0 is directory
      * 1 is file
      */

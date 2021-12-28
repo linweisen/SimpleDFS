@@ -5,6 +5,7 @@ import com.beust.jcommander.ParameterException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.dom4j.DocumentException;
 import org.simpledfs.core.command.Command;
 import org.simpledfs.core.config.Configuration;
 import org.simpledfs.core.config.ConfigurationParser;
@@ -40,7 +41,13 @@ public class Master {
 
     public Master(Command command) {
         String masterConfigFile = command.getFile();
-        Properties properties = ConfigurationParser.read(masterConfigFile);
+        Properties properties = null;
+        try {
+            properties = new ConfigurationParser().read(masterConfigFile);
+        } catch (DocumentException e) {
+            LOGGER.error("{} parse wrong, {}", masterConfigFile, e.getMessage());
+            e.printStackTrace();
+        }
         if (properties == null){
             LOGGER.error("master configuration parse failed...");
             System.exit(0);

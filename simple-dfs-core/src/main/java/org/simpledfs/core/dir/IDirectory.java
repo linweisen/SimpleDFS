@@ -21,8 +21,14 @@ public abstract class IDirectory implements Serializable {
     @JsonIgnore
     private String parentId;
 
+    /**
+     * 节点名称
+     */
     private String name;
 
+    /**
+     * inode 权限属性
+     */
     private INode iNode;
 
     public IDirectory() {
