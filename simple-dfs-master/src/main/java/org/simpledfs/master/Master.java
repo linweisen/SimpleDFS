@@ -170,7 +170,7 @@ public class Master {
             }
         }
         catch (ParameterException e){
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             jct.usage();
             System.exit(0);
         }
